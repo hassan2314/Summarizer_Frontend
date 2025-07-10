@@ -46,7 +46,7 @@ const Home = () => {
         <Box flex={1} display="flex" flexDirection="column">
           <OutputDisplay summary={summary} />
           <Box display="flex" justifyContent="center" mt={2}>
-            <Button variant="outlined" onClick={handleSave}>
+            <Button variant="contained" onClick={handleSave}>
               Save
             </Button>
           </Box>
