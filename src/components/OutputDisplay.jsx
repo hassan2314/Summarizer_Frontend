@@ -6,9 +6,9 @@ const OutputDisplay = ({ summary }) => {
 
   return (
     <Box>
-      <Typography variant="subtitle1" mb={1}>
+      {/* <Typography variant="subtitle1" mb={1}>
         Summary:
-      </Typography>
+      </Typography> */}
       <Paper elevation={3} sx={{ p: 2, minHeight: "300px" }}>
         {summary || "Your summary will appear here."}
       </Paper>
