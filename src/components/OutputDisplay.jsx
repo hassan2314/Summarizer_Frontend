@@ -9,7 +9,7 @@ const OutputDisplay = ({ summary }) => {
       {/* <Typography variant="subtitle1" mb={1}>
         Summary:
       </Typography> */}
-      <Paper elevation={3} sx={{ p: 2, minHeight: "300px" }}>
+      <Paper elevation={3} sx={{ p: 2, minHeight: "310px" }}>
         {summary || "Your summary will appear here."}
       </Paper>
       <Typography mt={2} color="textSecondary">
