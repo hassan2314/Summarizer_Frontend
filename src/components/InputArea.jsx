@@ -1,4 +1,5 @@
 import { Box, TextField, Button } from "@mui/material";
+import { useState } from "react";
 
 const InputArea = ({ text, setText }) => {
   const [type, setType] = useState("text");
