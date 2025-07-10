@@ -12,7 +12,7 @@ const OutputDisplay = ({ summary }) => {
       <Paper elevation={3} sx={{ p: 2, minHeight: "300px" }}>
         {summary || "Your summary will appear here."}
       </Paper>
-      <Typography mt={1} color="textSecondary">
+      <Typography mt={2} color="textSecondary">
         {sentenceCount} sentences • {wordCount} words
       </Typography>
     </Box>
