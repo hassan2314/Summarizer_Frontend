@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Container, Grid, Box, Button } from "@mui/material";
+import { Container, Box, Button } from "@mui/material";
 import ModeSelector from "../components/ModeSelector";
-import LengthSlider from "../components/LengthSlider";
 import InputArea from "../components/InputArea";
 import OutputDisplay from "../components/OutputDisplay";
 
@@ -12,28 +11,46 @@ const Home = () => {
   const [summary, setSummary] = useState("");
 
   const handleSummarize = () => {
-    // Call backend summarization endpoint
     console.log({ text, mode, length });
+    // TODO: Send request to backend
+    setSummary("Generated summary will appear here...");
+  };
+
+  const handleSave = () => {
+    console.log("Saved to history!");
+    // TODO: Save summary to backend
   };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
-      <ModeSelector mode={mode} setMode={setMode} />
-      <LengthSlider length={length} setLength={setLength} />
+    <Container maxWidth="lg" sx={{ my: 4 }}>
+      {/* First Row: Mode Selector only for Input Area */}
+      <Box display="flex" justifyContent="flex-start" mb={2}>
+        <Box width={{ xs: "100%", md: "50%" }}>
+          <ModeSelector mode={mode} setMode={setMode} />
+        </Box>
+      </Box>
 
-      <Grid container spacing={2} mt={2}>
-        <Grid item xs={12} md={6}>
+      {/* Second Row: Input & Output side by side */}
+      <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={2}>
+        {/* Left: Input */}
+        <Box flex={1} display="flex" flexDirection="column">
           <InputArea text={text} setText={setText} />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <OutputDisplay summary={summary} />
-        </Grid>
-      </Grid>
+          <Box display="flex" justifyContent="center" mt={2}>
+            <Button variant="contained" onClick={handleSummarize}>
+              Summarize
+            </Button>
+          </Box>
+        </Box>
 
-      <Box display="flex" justifyContent="center" mt={3}>
-        <Button variant="contained" size="large" onClick={handleSummarize}>
-          Summarize
-        </Button>
+        {/* Right: Output */}
+        <Box flex={1} display="flex" flexDirection="column">
+          <OutputDisplay summary={summary} />
+          <Box display="flex" justifyContent="center" mt={2}>
+            <Button variant="outlined" onClick={handleSave}>
+              Save
+            </Button>
+          </Box>
+        </Box>
       </Box>
     </Container>
   );
