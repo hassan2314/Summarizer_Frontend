@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Container, Grid, Box, Button } from "@mui/material";
 import ModeSelector from "../components/ModeSelector";
 import LengthSlider from "../components/LengthSlider";
-import InputArea from "../components/ InputArea";
+import InputArea from "../components/InputArea";
 import OutputDisplay from "../components/OutputDisplay";
 
 const Home = () => {
