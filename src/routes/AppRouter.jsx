@@ -3,6 +3,7 @@ import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import PublicRoute from "./PublicRoute";
 import Navbar from "../components/Navbar";
+import Home from "../pages/Home";
 // import ProtectedRoute from "./ProtectedRoute";
 
 const AppRouter = () => {
@@ -25,6 +26,15 @@ const AppRouter = () => {
             <PublicRoute>
               <Signup />
             </PublicRoute>
+          }
+        />
+
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
           }
         />
 
