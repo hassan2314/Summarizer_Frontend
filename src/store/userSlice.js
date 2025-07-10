@@ -1,9 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// Safe user parsing from localStorage
+let user = null;
+try {
+  const rawUser = localStorage.getItem("user");
+  if (rawUser && rawUser !== "undefined") {
+    user = JSON.parse(rawUser);
+  }
+} catch (error) {
+  console.error("Error parsing user from localStorage:", error);
+  localStorage.removeItem("user"); // Optional cleanup
+}
+
 const initialState = {
-  user: JSON.parse(localStorage.getItem("user")) || null,
+  user,
   token: localStorage.getItem("token") || null,
-  status: localStorage.getItem("status") === "true" ? true : false,
+  status: localStorage.getItem("status") === "true" && !!user,
 };
 
 const userSlice = createSlice({
@@ -16,7 +28,7 @@ const userSlice = createSlice({
       state.token = action.payload.token;
       localStorage.setItem("user", JSON.stringify(action.payload.user));
       localStorage.setItem("token", action.payload.token);
-      localStorage.setItem("status", true);
+      localStorage.setItem("status", "true");
     },
     logout: (state) => {
       state.status = false;
