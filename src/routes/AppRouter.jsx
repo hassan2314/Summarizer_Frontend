@@ -4,7 +4,7 @@ import Signup from "../pages/Signup";
 import PublicRoute from "./PublicRoute";
 import Navbar from "../components/Navbar";
 import Home from "../pages/Home";
-// import ProtectedRoute from "./ProtectedRoute";
+import ProtectedRoute from "./ProtectedRoute";
 
 const AppRouter = () => {
   return (
