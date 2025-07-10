@@ -1,8 +1,10 @@
 import { Box, TextField, Button } from "@mui/material";
 
 const InputArea = ({ text, setText }) => {
+  const [type, setType] = useState("text");
   const handleFileUpload = (e) => {
     // Convert PDF or TXT to text
+    setType("pdf");
   };
 
   return (
