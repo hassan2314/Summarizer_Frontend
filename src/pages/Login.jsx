@@ -21,14 +21,16 @@ const Login = () => {
 
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}users/login`,
+        `${import.meta.env.VITE_API_URL}user/login`,
         {
           email,
           password,
         }
       );
 
-      dispatch(loginSuccess({ user: res.data.user, token: res.data.token }));
+      const { user, token } = res.data.data;
+
+      dispatch(loginSuccess({ user, token }));
       navigate("/");
     } catch (err) {
       const msg = err.response?.data?.message || "Login failed";
