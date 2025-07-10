@@ -1,9 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// Safely parse user from localStorage
+let user = null;
+const rawUser = localStorage.getItem("user");
+try {
+  user = rawUser ? JSON.parse(rawUser) : null;
+} catch (error) {
+  console.error("Failed to parse user from localStorage:", error);
+  localStorage.removeItem("user"); // Optional: clean up corrupted data
+}
+
 const initialState = {
-  user: JSON.parse(localStorage.getItem("user")) || null,
+  user,
   token: localStorage.getItem("token") || null,
-  status: localStorage.getItem("status") === "true" ? true : false,
+  status: localStorage.getItem("status") === "true" && user !== null,
 };
 
 const userSlice = createSlice({
@@ -16,7 +26,7 @@ const userSlice = createSlice({
       state.token = action.payload.token;
       localStorage.setItem("user", JSON.stringify(action.payload.user));
       localStorage.setItem("token", action.payload.token);
-      localStorage.setItem("status", true);
+      localStorage.setItem("status", "true");
     },
     logout: (state) => {
       state.status = false;
