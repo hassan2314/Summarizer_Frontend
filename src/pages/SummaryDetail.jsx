@@ -7,7 +7,21 @@ import {
   Box,
   Button,
   Stack,
+  Chip,
+  useTheme,
+  Avatar,
 } from "@mui/material";
+import {
+  ArrowBack as BackIcon,
+  Delete as DeleteIcon,
+  Save as SaveIcon,
+  Edit as EditIcon,
+  Description as ParagraphIcon,
+  ListAlt as BulletsIcon,
+  QuestionAnswer as QuestionsIcon,
+  Schedule as TimeIcon,
+  CalendarToday as DateIcon,
+} from "@mui/icons-material";
 import axios from "axios";
 import InputArea from "../components/InputArea";
 import OutputDisplay from "../components/OutputDisplay";
@@ -15,6 +29,7 @@ import OutputDisplay from "../components/OutputDisplay";
 const SummaryDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const theme = useTheme();
 
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -46,6 +61,30 @@ const SummaryDetail = () => {
     };
     fetchSummary();
   }, [id]);
+
+  const getTypeIcon = () => {
+    if (!summary) return <ParagraphIcon />;
+    switch (summary.type) {
+      case "paragraph":
+        return <ParagraphIcon />;
+      case "bullets":
+        return <BulletsIcon />;
+      case "questions":
+        return <QuestionsIcon />;
+      default:
+        return <ParagraphIcon />;
+    }
+  };
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
 
   const handleUpdate = async () => {
     try {
@@ -103,22 +142,35 @@ const SummaryDetail = () => {
 
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
-      <Typography variant="h5" gutterBottom>
-        {summary.name}
-      </Typography>
+      <Box display="flex" alignItems="center" gap={2} mb={3}>
+        <Chip
+          avatar={<Avatar>{getTypeIcon()}</Avatar>}
+          label={summary.type || "N/A"}
+          size="medium"
+          sx={{
+            textTransform: "capitalize",
+            bgcolor:
+              theme.palette.mode === "light"
+                ? theme.palette.grey[200]
+                : theme.palette.grey[800],
+            color: theme.palette.text.primary,
+            fontSize: "0.875rem",
+          }}
+        />
 
-      <Box mb={2}>
-        <Typography variant="body2">
-          <strong>Type:</strong> {summary.type}
-        </Typography>
-        <Typography variant="body2">
-          <strong>Created:</strong>{" "}
-          {new Date(summary.createdAt).toLocaleString()}
-        </Typography>
-        <Typography variant="body2">
-          <strong>Last Modified:</strong>{" "}
-          {new Date(summary.updatedAt).toLocaleString()}
-        </Typography>
+        <Box display="flex" alignItems="center" gap={1}>
+          <DateIcon fontSize="small" color="action" />
+          <Typography variant="body2" color="textSecondary">
+            Created: {formatDate(summary.createdAt)}
+          </Typography>
+        </Box>
+
+        <Box display="flex" alignItems="center" gap={1}>
+          <TimeIcon fontSize="small" color="action" />
+          <Typography variant="body2" color="textSecondary">
+            Modified: {formatDate(summary.updatedAt)}
+          </Typography>
+        </Box>
       </Box>
 
       <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={2}>
