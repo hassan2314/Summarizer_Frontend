@@ -24,9 +24,12 @@ const SavedSummaries = () => {
     const fetchSummaries = async () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}summary`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
           withCredentials: true,
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
         });
+
         setSummaries(res.data.data);
       } catch (error) {
         console.error("Failed to fetch summaries:", error);
