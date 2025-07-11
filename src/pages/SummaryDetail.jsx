@@ -130,7 +130,6 @@ const SummaryDetail = () => {
           </Box>
         </Box>
 
-        {/* Right: Editable Response */}
         <Box flex={1} display="flex" flexDirection="column">
           <OutputDisplay
             summary={updatedResponse}
