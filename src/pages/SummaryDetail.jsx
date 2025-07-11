@@ -50,7 +50,7 @@ const SummaryDetail = () => {
   const handleUpdate = async () => {
     try {
       const payload = {
-        summary: updatedResponse,
+        response: updatedResponse,
       };
 
       const res = await axios.put(
