@@ -60,7 +60,6 @@ const SummaryDetail = () => {
         {summary.name}
       </Typography>
 
-      {/* First Row: Type, Created/Updated Info */}
       <Box mb={2}>
         <Typography variant="body2">
           <strong>Type:</strong> {summary.type}
@@ -75,7 +74,6 @@ const SummaryDetail = () => {
         </Typography>
       </Box>
 
-      {/* Second Row: Input & Output */}
       <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={2}>
         {/* Left: Original Text */}
         <Box flex={1} display="flex" flexDirection="column">
@@ -87,7 +85,6 @@ const SummaryDetail = () => {
           </Box>
         </Box>
 
-        {/* Right: Summary / Response */}
         <Box flex={1} display="flex" flexDirection="column">
           <OutputDisplay
             summary={
