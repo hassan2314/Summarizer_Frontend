@@ -25,6 +25,7 @@ const SavedSummaries = () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}summary`, {
           withCredentials: true,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         });
         setSummaries(res.data.data);
       } catch (error) {
