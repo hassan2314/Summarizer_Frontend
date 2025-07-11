@@ -43,8 +43,7 @@ const Signup = () => {
         }
       );
       if (res) {
-        dispatch(loginSuccess({ user: res.data.user, token: res.data.token }));
-        navigate("/");
+        navigate("/login");
       }
     } catch (err) {
       const msg = err.response?.data?.message || "Signup failed";
