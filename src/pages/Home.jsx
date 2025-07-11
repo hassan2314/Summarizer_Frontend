@@ -20,7 +20,7 @@ const Home = () => {
   const [mode, setMode] = useState("paragraph");
   const [length, setLength] = useState(3);
   const [text, setText] = useState("");
-  const [summary, setSummary] = useState("");
+  const [summary, setSummary] = useState("Example Sample Summary");
   const [openDialog, setOpenDialog] = useState(false);
   const [name, setName] = useState("");
 
