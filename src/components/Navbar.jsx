@@ -25,7 +25,7 @@ import {
   AccountCircle as ProfileIcon,
   Home as HomeIcon,
 } from "@mui/icons-material";
-import { useThemeContext } from "../context/ThemeContext";
+import { useTheme as useThemeContext } from "../context/ThemeContext";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/userSlice.js";
