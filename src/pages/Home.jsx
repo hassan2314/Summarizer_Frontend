@@ -49,8 +49,8 @@ const Home = () => {
       type: mode,
       originalText: text,
       tags: ["A", "B", "C", "D"],
-      response: mode === "question" ? summary.split("\n\n") : summary,
-      respose: mode === "bullet" ? summary.split("\n\n") : summary,
+      response: mode === "question" ? summary.split("\n\n") : [summary],
+      respose: mode === "bullet" ? summary.split("\n\n") : [summary],
     };
 
     try {
