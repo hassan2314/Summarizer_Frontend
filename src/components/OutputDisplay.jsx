@@ -1,6 +1,6 @@
 import { Box, Typography, TextField } from "@mui/material";
 
-const OutputDisplay = ({ summary = "" }) => {
+const OutputDisplay = ({ summary = "", readOnly = true }) => {
   const wordCount = summary.trim().split(/\s+/).filter(Boolean).length;
   const sentenceCount = summary.split(/[.!?]/).filter((s) => s.trim()).length;
 
@@ -13,7 +13,7 @@ const OutputDisplay = ({ summary = "" }) => {
         variant="outlined"
         value={summary || "Your summary will appear here."}
         InputProps={{
-          readOnly: true,
+          readOnly,
         }}
       />
       <Typography mt={2} variant="caption" color="textSecondary">
