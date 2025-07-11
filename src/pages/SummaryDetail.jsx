@@ -79,7 +79,7 @@ const SummaryDetail = () => {
         },
         withCredentials: true,
       });
-      navigate("/summaries");
+      navigate("/saved");
     } catch (error) {
       console.error("Failed to delete summary:", error);
     }
