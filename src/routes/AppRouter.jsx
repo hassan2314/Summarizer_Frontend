@@ -5,6 +5,8 @@ import PublicRoute from "./PublicRoute";
 import Navbar from "../components/Navbar";
 import Home from "../pages/Home";
 import ProtectedRoute from "./ProtectedRoute";
+import SavedSummaries from "../pages/SavedSummaries";
+import SummaryDetail from "../pages/SummaryDetail";
 
 const AppRouter = () => {
   return (
@@ -34,6 +36,22 @@ const AppRouter = () => {
           element={
             <ProtectedRoute>
               <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/saved"
+          element={
+            <ProtectedRoute>
+              <SavedSummaries />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/summary/:id"
+          element={
+            <ProtectedRoute>
+              <SummaryDetail />
             </ProtectedRoute>
           }
         />
