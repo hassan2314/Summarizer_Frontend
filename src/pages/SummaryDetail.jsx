@@ -7,6 +7,8 @@ import {
   Box,
   Button,
   Stack,
+  Paper,
+  Divider,
 } from "@mui/material";
 import axios from "axios";
 import InputArea from "../components/InputArea";
@@ -87,7 +89,7 @@ const SummaryDetail = () => {
 
   if (loading) {
     return (
-      <Container sx={{ mt: 4, display: "flex", justifyContent: "center" }}>
+      <Container sx={{ mt: 6, display: "flex", justifyContent: "center" }}>
         <CircularProgress />
       </Container>
     );
@@ -95,34 +97,41 @@ const SummaryDetail = () => {
 
   if (!summary) {
     return (
-      <Container sx={{ mt: 4 }}>
+      <Container sx={{ mt: 6 }}>
         <Typography color="error">Summary not found.</Typography>
       </Container>
     );
   }
 
   return (
-    <Container maxWidth="lg" sx={{ my: 4 }}>
-      <Typography variant="h5" gutterBottom>
-        {summary.name}
+    <Container maxWidth="lg" sx={{ my: 6 }}>
+      {/* Header */}
+      <Typography variant="h4" fontWeight={600} gutterBottom color="primary">
+        {summary.name || "Untitled Summary"}
       </Typography>
 
-      <Box mb={2}>
-        <Typography variant="body2">
-          <strong>Type:</strong> {summary.type}
+      {/* Metadata */}
+      <Paper elevation={2} sx={{ p: 3, mb: 4, borderRadius: 3 }}>
+        <Typography variant="subtitle1">
+          <strong>Type:</strong> {summary.type || "N/A"}
         </Typography>
-        <Typography variant="body2">
+        <Typography variant="subtitle2" color="text.secondary">
           <strong>Created:</strong>{" "}
           {new Date(summary.createdAt).toLocaleString()}
         </Typography>
-        <Typography variant="body2">
+        <Typography variant="subtitle2" color="text.secondary">
           <strong>Last Modified:</strong>{" "}
           {new Date(summary.updatedAt).toLocaleString()}
         </Typography>
-      </Box>
+      </Paper>
 
-      <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={2}>
-        {/* Left: Original Text */}
+      <Box
+        display="flex"
+        flexDirection={{ xs: "column", md: "row" }}
+        gap={3}
+        alignItems="stretch"
+      >
+        {/* Original Text */}
         <Box flex={1} display="flex" flexDirection="column">
           <InputArea text={summary.originalText} readOnly />
           <Box display="flex" justifyContent="center" mt={2}>
@@ -132,17 +141,48 @@ const SummaryDetail = () => {
           </Box>
         </Box>
 
+        <Divider
+          orientation="vertical"
+          flexItem
+          sx={{ display: { xs: "none", md: "block" } }}
+        />
+
+        {/* Editable Summary */}
         <Box flex={1} display="flex" flexDirection="column">
           <OutputDisplay
             summary={updatedResponse}
             readOnly={false}
             onChange={(e) => setUpdatedResponse(e.target.value)}
           />
-          <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
-            <Button variant="contained" color="success" onClick={handleUpdate}>
+
+          <Stack direction="row" spacing={2} justifyContent="center" mt={3}>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={handleUpdate}
+              sx={{
+                fontWeight: 600,
+                px: 3,
+                py: 1,
+                background: "linear-gradient(to right, #43cea2, #185a9d)",
+                "&:hover": {
+                  background: "linear-gradient(to right, #11998e, #38ef7d)",
+                },
+              }}
+            >
               Update
             </Button>
-            <Button variant="contained" color="error" onClick={handleDelete}>
+
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleDelete}
+              sx={{
+                fontWeight: 600,
+                px: 3,
+                py: 1,
+              }}
+            >
               Delete
             </Button>
           </Stack>

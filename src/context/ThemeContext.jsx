@@ -26,6 +26,49 @@ export const ThemeProvider = ({ children }) => {
     return createTheme({
       palette: {
         mode,
+        ...(mode === "light"
+          ? {
+              primary: {
+                main: "#667eea",
+              },
+              secondary: {
+                main: "#764ba2",
+              },
+              background: {
+                default: "#f3f4f6",
+                paper: "#fff",
+              },
+            }
+          : {
+              primary: {
+                main: "#90caf9",
+              },
+              secondary: {
+                main: "#ce93d8",
+              },
+              background: {
+                default: "#121212",
+                paper: "#1e1e2f",
+              },
+            }),
+      },
+      typography: {
+        fontFamily: "Poppins, Roboto, sans-serif",
+      },
+      shape: {
+        borderRadius: 12,
+      },
+      components: {
+        MuiButton: {
+          styleOverrides: {
+            root: {
+              textTransform: "none",
+              fontWeight: 600,
+              padding: "10px 18px",
+              borderRadius: "8px",
+            },
+          },
+        },
       },
     });
   }, [mode]);

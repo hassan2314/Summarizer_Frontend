@@ -5,11 +5,17 @@ const InputArea = ({ text, setText }) => {
     <Box>
       <TextField
         label="Enter or paste your text"
+        placeholder="Paste your content here..."
         multiline
         rows={12}
         fullWidth
         value={text}
         onChange={(e) => setText(e.target.value)}
+        variant="outlined"
+        sx={{
+          bgcolor: "background.paper",
+          borderRadius: 2,
+        }}
       />
     </Box>
   );

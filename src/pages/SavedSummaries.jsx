@@ -11,6 +11,7 @@ import {
   Paper,
   CircularProgress,
   Link,
+  Box,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -43,61 +44,89 @@ const SavedSummaries = () => {
 
   if (loading) {
     return (
-      <Container sx={{ mt: 4, display: "flex", justifyContent: "center" }}>
+      <Container sx={{ mt: 6, display: "flex", justifyContent: "center" }}>
         <CircularProgress />
       </Container>
     );
   }
 
   return (
-    <Container sx={{ mt: 4 }}>
-      <Typography variant="h5" gutterBottom>
-        Saved Summaries
+    <Container sx={{ mt: 6 }}>
+      <Typography variant="h4" fontWeight={600} gutterBottom color="primary">
+        Your Saved Summaries
       </Typography>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                <strong>Name</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Type</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Created At</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Last Modified</strong>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {summaries.map((summary) => (
-              <TableRow key={summary.id}>
-                <TableCell>
-                  <Link
-                    component="button"
-                    variant="body1"
-                    onClick={() => navigate(`/summary/${summary.id}`)}
-                    underline="hover"
-                  >
-                    {summary.tags?.[0] || "Untitled"}
-                  </Link>
+      {summaries.length === 0 ? (
+        <Typography variant="body1" color="text.secondary">
+          No summaries found. Try generating and saving one first!
+        </Typography>
+      ) : (
+        <TableContainer
+          component={Paper}
+          sx={{
+            borderRadius: 3,
+            boxShadow: 3,
+            mt: 3,
+            overflow: "hidden",
+          }}
+        >
+          <Table>
+            <TableHead>
+              <TableRow sx={{ backgroundColor: "primary.main" }}>
+                <TableCell sx={{ color: "#fff", fontWeight: 600 }}>
+                  Name
                 </TableCell>
-                <TableCell>{summary.type || "N/A"}</TableCell>
-                <TableCell>
-                  {new Date(summary.createdAt).toLocaleString()}
+                <TableCell sx={{ color: "#fff", fontWeight: 600 }}>
+                  Type
                 </TableCell>
-                <TableCell>
-                  {new Date(summary.updatedAt).toLocaleString()}
+                <TableCell sx={{ color: "#fff", fontWeight: 600 }}>
+                  Created
+                </TableCell>
+                <TableCell sx={{ color: "#fff", fontWeight: 600 }}>
+                  Last Modified
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+
+            <TableBody>
+              {summaries.map((summary, idx) => (
+                <TableRow
+                  key={summary.id}
+                  hover
+                  sx={{
+                    backgroundColor:
+                      idx % 2 === 0 ? "grey.70" : "background.paper",
+                    cursor: "pointer",
+                    transition: "background 0.3s",
+                    "&:hover": {
+                      backgroundColor: "action.hover",
+                    },
+                  }}
+                  onClick={() => navigate(`/summary/${summary.id}`)}
+                >
+                  <TableCell>
+                    <Link
+                      component="span"
+                      variant="body1"
+                      sx={{ fontWeight: 500, color: "primary.main" }}
+                      underline="hover"
+                    >
+                      {summary.name || summary.tags?.[0] || "Untitled"}
+                    </Link>
+                  </TableCell>
+                  <TableCell>{summary.type || "N/A"}</TableCell>
+                  <TableCell>
+                    {new Date(summary.createdAt).toLocaleString()}
+                  </TableCell>
+                  <TableCell>
+                    {new Date(summary.updatedAt).toLocaleString()}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </Container>
   );
 };

@@ -78,15 +78,35 @@ const Signup = () => {
         <Button
           type="submit"
           variant="contained"
-          color="primary"
           fullWidth
-          sx={{ mt: 2 }}
+          size="large"
+          onClick={handleSignup}
+          sx={{
+            mt: 3,
+            py: 1.5,
+            fontWeight: "bold",
+            background: "linear-gradient(45deg, #667eea, #764ba2)",
+            "&:hover": {
+              background: "linear-gradient(45deg, #5a67d8, #6b46c1)",
+            },
+            color: "#fff",
+          }}
         >
           Create Account
         </Button>
       </form>
-      <Typography variant="body2" sx={{ mt: 2 }}>
-        Already have an account? <Link to="/login">Login here</Link>
+      <Typography
+        variant="body2"
+        align="center"
+        sx={{ mt: 3, color: "text.secondary" }}
+      >
+        Already have an account?{" "}
+        <Link
+          to="/login"
+          style={{ color: "#667eea", textDecoration: "underline" }}
+        >
+          Login here
+        </Link>
       </Typography>
     </AuthFormWrapper>
   );

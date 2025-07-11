@@ -18,7 +18,23 @@ const FormInput = ({
       variant="outlined"
       fullWidth
       margin="normal"
-      color={color}
+      color="primary"
+      sx={{
+        "& label.Mui-focused": {
+          color: "#1976d2",
+        },
+        "& .MuiOutlinedInput-root": {
+          "& fieldset": {
+            borderColor: "#ccc",
+          },
+          "&:hover fieldset": {
+            borderColor: "#888",
+          },
+          "&.Mui-focused fieldset": {
+            borderColor: "#1976d2",
+          },
+        },
+      }}
       {...props}
     />
   );

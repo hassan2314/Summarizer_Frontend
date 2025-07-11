@@ -74,34 +74,64 @@ const Home = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ my: 4 }}>
-      <Box display="flex" justifyContent="flex-start" mb={2}>
-        <Box width={{ xs: "100%", md: "50%" }}>
+    <Container maxWidth="lg" sx={{ my: 6 }}>
+      <Box display="flex" justifyContent="flex-start" mb={3}>
+        <Box width={{ xs: "80%", md: "35%" }}>
           <ModeSelector mode={mode} setMode={setMode} />
         </Box>
       </Box>
 
-      <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={2}>
-        <Box flex={1} display="flex" flexDirection="column">
+      <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={4}>
+        <Box flex={1} display="flex" flexDirection="column" gap={2}>
           <InputArea text={text} setText={setText} />
           <ButtonsBox setText={setText} />
-          <Box display="flex" justifyContent="center" mt={2}>
-            <Button variant="contained" onClick={handleSummarize}>
+          <Box display="flex" justifyContent="center" mt={1}>
+            <Button
+              variant="contained"
+              onClick={handleSummarize}
+              sx={{
+                background: "linear-gradient(to right, #667eea, #764ba2)",
+                color: "#fff",
+                px: 4,
+                py: 1,
+                fontWeight: 600,
+                borderRadius: 2,
+                "&:hover": {
+                  background: "linear-gradient(to right, #5a67d8, #6b46c1)",
+                },
+              }}
+            >
               Summarize
             </Button>
           </Box>
         </Box>
 
-        <Box flex={1} display="flex" flexDirection="column">
+        {/* Output Side */}
+        <Box flex={1} display="flex" flexDirection="column" gap={2}>
           <OutputDisplay summary={summary} />
           <Box display="flex" justifyContent="center" mt={2}>
-            <Button variant="contained" onClick={handleSaveClick}>
+            <Button
+              variant="contained"
+              onClick={handleSaveClick}
+              sx={{
+                background: "linear-gradient(to right, #43cea2, #185a9d)",
+                color: "#fff",
+                px: 4,
+                py: 1,
+                fontWeight: 600,
+                borderRadius: 2,
+                "&:hover": {
+                  background: "linear-gradient(to right, #11998e, #38ef7d)",
+                },
+              }}
+            >
               Save
             </Button>
           </Box>
         </Box>
       </Box>
 
+      {/* Dialog */}
       <Dialog
         open={openDialog}
         onClose={() => setOpenDialog(false)}
@@ -120,7 +150,9 @@ const Home = () => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
+          <Button onClick={() => setOpenDialog(false)} color="secondary">
+            Cancel
+          </Button>
           <Button variant="contained" onClick={confirmSave}>
             Save
           </Button>

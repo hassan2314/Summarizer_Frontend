@@ -12,12 +12,18 @@ const ButtonsBox = ({ setText }) => {
   };
 
   return (
-    <Box mt={2} display="flex" justifyContent="space-between">
-      <Button variant="outlined" component="label">
+    <Box mt={2} display="flex" justifyContent="space-between" gap={2}>
+      <Button variant="outlined" component="label" sx={{ fontWeight: 500 }}>
         Upload Doc
         <input type="file" hidden onChange={handleFileUpload} />
       </Button>
-      <Button variant="outlined" onClick={() => setText("")}>
+
+      <Button
+        variant="outlined"
+        color="error"
+        onClick={() => setText("")}
+        sx={{ fontWeight: 500 }}
+      >
         Clear
       </Button>
     </Box>
