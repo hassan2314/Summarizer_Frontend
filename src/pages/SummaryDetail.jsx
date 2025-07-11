@@ -12,7 +12,13 @@ const SummaryDetail = () => {
     const fetchSummary = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_API_URL}summary/${id}`
+          `${import.meta.env.VITE_API_URL}summary/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            withCredentials: true,
+          }
         );
         setSummary(res.data.data);
       } catch (error) {
