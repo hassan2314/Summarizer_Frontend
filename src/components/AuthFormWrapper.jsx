@@ -14,7 +14,7 @@ const AuthFormWrapper = ({ title, children }) => {
       }}
     >
       <Paper
-        elevation={6}
+        elevation={7}
         sx={{
           p: 4,
           borderRadius: 4,
