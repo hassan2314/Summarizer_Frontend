@@ -50,7 +50,9 @@ const SummaryDetail = () => {
   const handleUpdate = async () => {
     try {
       const payload = {
-        response: updatedResponse,
+        response: updatedResponse
+          .split("\n\n")
+          .filter((item) => item.trim() !== ""),
       };
 
       const res = await axios.put(
