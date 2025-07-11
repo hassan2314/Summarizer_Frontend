@@ -25,13 +25,11 @@ const Home = () => {
   const [name, setName] = useState("");
 
   const handleSummarize = () => {
-    // TODO: Replace with actual backend call
     if (!text.trim()) {
       alert("Please enter some text first.");
       return;
     }
 
-    // Example summary
     setSummary("Generated summary will appear here...");
   };
 
@@ -85,7 +83,7 @@ const Home = () => {
         <Box flex={1} display="flex" flexDirection="column" gap={2}>
           <InputArea text={text} setText={setText} />
           <ButtonsBox setText={setText} />
-          <Box display="flex" justifyContent="center" mt={1}>
+          <Box display="flex" justifyContent="center">
             <Button
               variant="contained"
               onClick={handleSummarize}
@@ -106,7 +104,6 @@ const Home = () => {
           </Box>
         </Box>
 
-        {/* Output Side */}
         <Box flex={1} display="flex" flexDirection="column" gap={2}>
           <OutputDisplay summary={summary} />
           <Box display="flex" justifyContent="center" mt={2}>
@@ -131,7 +128,6 @@ const Home = () => {
         </Box>
       </Box>
 
-      {/* Dialog */}
       <Dialog
         open={openDialog}
         onClose={() => setOpenDialog(false)}
