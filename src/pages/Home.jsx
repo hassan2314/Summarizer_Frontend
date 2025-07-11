@@ -3,6 +3,7 @@ import { Container, Box, Button } from "@mui/material";
 import ModeSelector from "../components/ModeSelector";
 import InputArea from "../components/InputArea";
 import OutputDisplay from "../components/OutputDisplay";
+import ButtonsBox from "../components/ButtonsBox";
 
 const Home = () => {
   const [mode, setMode] = useState("paragraph");
@@ -35,6 +36,7 @@ const Home = () => {
         {/* Left: Input */}
         <Box flex={1} display="flex" flexDirection="column">
           <InputArea text={text} setText={setText} />
+          <ButtonsBox />
           <Box display="flex" justifyContent="center" mt={2}>
             <Button variant="contained" onClick={handleSummarize}>
               Summarize
