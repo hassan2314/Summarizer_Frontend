@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Container, Typography, CircularProgress, Paper } from "@mui/material";
+import {
+  Container,
+  Typography,
+  CircularProgress,
+  Box,
+  Button,
+} from "@mui/material";
 import axios from "axios";
+import InputArea from "../components/InputArea";
+import OutputDisplay from "../components/OutputDisplay";
 
 const SummaryDetail = () => {
   const { id } = useParams();
@@ -47,30 +55,54 @@ const SummaryDetail = () => {
   }
 
   return (
-    <Container sx={{ mt: 4 }}>
+    <Container maxWidth="lg" sx={{ my: 4 }}>
       <Typography variant="h5" gutterBottom>
-        Summary Detail
+        {summary.name}
       </Typography>
-      <Paper sx={{ p: 3 }}>
-        <Typography variant="subtitle1">
-          <strong>Original Text:</strong>
-        </Typography>
-        <Typography variant="body2" sx={{ mb: 2 }}>
-          {summary.orignalText}
-        </Typography>
 
-        <Typography variant="subtitle1">
-          <strong>Summary:</strong>
+      {/* First Row: Type, Created/Updated Info */}
+      <Box mb={2}>
+        <Typography variant="body2">
+          <strong>Type:</strong> {summary.type}
         </Typography>
-        <Typography variant="body2">{summary.summary}</Typography>
+        <Typography variant="body2">
+          <strong>Created:</strong>{" "}
+          {new Date(summary.createdAt).toLocaleString()}
+        </Typography>
+        <Typography variant="body2">
+          <strong>Last Modified:</strong>{" "}
+          {new Date(summary.updatedAt).toLocaleString()}
+        </Typography>
+      </Box>
 
-        <Typography variant="caption" sx={{ display: "block", mt: 2 }}>
-          Created: {new Date(summary.createdAt).toLocaleString()}
-        </Typography>
-        <Typography variant="caption" sx={{ display: "block" }}>
-          Last Modified: {new Date(summary.updatedAt).toLocaleString()}
-        </Typography>
-      </Paper>
+      {/* Second Row: Input & Output */}
+      <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={2}>
+        {/* Left: Original Text */}
+        <Box flex={1} display="flex" flexDirection="column">
+          <InputArea text={summary.originalText} readOnly />
+          <Box display="flex" justifyContent="center" mt={2}>
+            <Button variant="outlined" disabled>
+              Original Text
+            </Button>
+          </Box>
+        </Box>
+
+        {/* Right: Summary / Response */}
+        <Box flex={1} display="flex" flexDirection="column">
+          <OutputDisplay
+            summary={
+              Array.isArray(summary.response)
+                ? summary.response.join("\n\n")
+                : summary.response
+            }
+          />
+          <Box display="flex" justifyContent="center" mt={2}>
+            <Button variant="contained" color="success">
+              Download
+            </Button>
+          </Box>
+        </Box>
+      </Box>
     </Container>
   );
 };
