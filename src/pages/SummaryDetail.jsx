@@ -49,13 +49,13 @@ const SummaryDetail = () => {
 
   const handleUpdate = async () => {
     try {
-      const summary = {
-        response: updatedResponse,
+      const payload = {
+        summary: updatedResponse,
       };
 
       const res = await axios.put(
         `${import.meta.env.VITE_API_URL}summary/${id}`,
-        summary,
+        payload,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
