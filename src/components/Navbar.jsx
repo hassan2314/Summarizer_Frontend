@@ -25,7 +25,6 @@ const Navbar = () => {
     navigate("/login");
   };
 
-  // Active nav button style
   const navStyles = ({ isActive }) => ({
     textDecoration: "none",
     color: isActive ? "#1976d2" : "inherit",
@@ -37,7 +36,6 @@ const Navbar = () => {
   return (
     <AppBar position="static" elevation={2} color="default" sx={{ mb: 10 }}>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-        {/* App Name */}
         <Box
           component={NavLink}
           to="/"
@@ -58,7 +56,6 @@ const Navbar = () => {
           </Typography>
         </Box>
 
-        {/* Nav Buttons */}
         <Stack direction="row" spacing={2} alignItems="center">
           {status ? (
             <>
