@@ -18,15 +18,6 @@ const InputArea = ({ text, setText }) => {
         value={text}
         onChange={(e) => setText(e.target.value)}
       />
-      <Box mt={2} display="flex" justifyContent="space-between">
-        <Button variant="outlined" component="label">
-          Upload Doc
-          <input type="file" hidden onChange={handleFileUpload} />
-        </Button>
-        <Button variant="outlined" onClick={() => setText("")}>
-          Clear
-        </Button>
-      </Box>
     </Box>
   );
 };
