@@ -36,7 +36,7 @@ const Home = () => {
         {/* Left: Input */}
         <Box flex={1} display="flex" flexDirection="column">
           <InputArea text={text} setText={setText} />
-          <ButtonsBox />
+          <ButtonsBox setText={setText} />
           <Box display="flex" justifyContent="center" mt={2}>
             <Button variant="contained" onClick={handleSummarize}>
               Summarize
