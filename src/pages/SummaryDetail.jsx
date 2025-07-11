@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Container,
   Typography,
   CircularProgress,
   Box,
   Button,
+  Stack,
 } from "@mui/material";
 import axios from "axios";
 import InputArea from "../components/InputArea";
@@ -13,8 +14,11 @@ import OutputDisplay from "../components/OutputDisplay";
 
 const SummaryDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [updatedResponse, setUpdatedResponse] = useState("");
 
   useEffect(() => {
     const fetchSummary = async () => {
@@ -29,6 +33,11 @@ const SummaryDetail = () => {
           }
         );
         setSummary(res.data.data);
+        setUpdatedResponse(
+          Array.isArray(res.data.data.response)
+            ? res.data.data.response.join("\n\n")
+            : res.data.data.response
+        );
       } catch (error) {
         console.error("Failed to load summary detail:", error);
       } finally {
@@ -37,6 +46,42 @@ const SummaryDetail = () => {
     };
     fetchSummary();
   }, [id]);
+
+  const handleUpdate = async () => {
+    try {
+      const payload = {
+        response: updatedResponse,
+      };
+
+      const res = await axios.put(
+        `${import.meta.env.VITE_API_URL}summary/${id}`,
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          withCredentials: true,
+        }
+      );
+      setSummary(res.data.data);
+    } catch (error) {
+      console.error("Failed to update summary:", error);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`${import.meta.env.VITE_API_URL}summary/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        withCredentials: true,
+      });
+      navigate("/summaries");
+    } catch (error) {
+      console.error("Failed to delete summary:", error);
+    }
+  };
 
   if (loading) {
     return (
@@ -85,19 +130,21 @@ const SummaryDetail = () => {
           </Box>
         </Box>
 
+        {/* Right: Editable Response */}
         <Box flex={1} display="flex" flexDirection="column">
           <OutputDisplay
-            summary={
-              Array.isArray(summary.response)
-                ? summary.response.join("\n\n")
-                : summary.response
-            }
+            summary={updatedResponse}
+            readOnly={false}
+            onChange={(e) => setUpdatedResponse(e.target.value)}
           />
-          <Box display="flex" justifyContent="center" mt={2}>
-            <Button variant="contained" color="success">
-              Download
+          <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
+            <Button variant="contained" color="success" onClick={handleUpdate}>
+              Update
             </Button>
-          </Box>
+            <Button variant="contained" color="error" onClick={handleDelete}>
+              Delete
+            </Button>
+          </Stack>
         </Box>
       </Box>
     </Container>
