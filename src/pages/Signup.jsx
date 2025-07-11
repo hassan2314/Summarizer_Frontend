@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Typography, Alert } from "@mui/material";
+import { Button, Typography, Alert, Fade } from "@mui/material";
 import FormInput from "../components/FormInput";
 import AuthFormWrapper from "../components/AuthFormWrapper";
 import axios from "axios";
@@ -12,6 +12,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [formError, setFormError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ const Signup = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     setFormError("");
+    setIsLoading(true);
 
     try {
       const res = await axios.post(
@@ -47,21 +49,24 @@ const Signup = () => {
     } catch (err) {
       const msg = err.response?.data?.message || "Signup failed";
       setFormError(msg);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <AuthFormWrapper title="Signup">
+    <AuthFormWrapper title="Join Us Today">
       <form onSubmit={handleSignup}>
         <FormInput
-          label="Name"
+          label="Full Name"
           name="name"
           type="text"
           value={name}
           onChange={handleChange}
+          autoFocus
         />
         <FormInput
-          label="Email"
+          label="Email Address"
           name="email"
           type="email"
           value={email}
@@ -74,19 +79,52 @@ const Signup = () => {
           value={password}
           onChange={handleChange}
         />
-        {formError && <Alert severity="error">{formError}</Alert>}
+
+        {formError && (
+          <Fade in={!!formError}>
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {formError}
+            </Alert>
+          </Fade>
+        )}
+
         <Button
           type="submit"
           variant="contained"
           color="primary"
           fullWidth
-          sx={{ mt: 2 }}
+          onClick={handleSignup}
+          size="large"
+          sx={{
+            mt: 2,
+            py: 1.5,
+            fontWeight: 600,
+            background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+            boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+            "&:hover": {
+              background: "linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)",
+            },
+          }}
+          disabled={isLoading}
         >
-          Create Account
+          {isLoading ? "Creating Account..." : "Create Account"}
         </Button>
       </form>
-      <Typography variant="body2" sx={{ mt: 2 }}>
-        Already have an account? <Link to="/login">Login here</Link>
+      <Typography variant="body2" sx={{ mt: 3, textAlign: "center" }}>
+        Already have an account?{" "}
+        <Link
+          to="/login"
+          style={{
+            color: "#FF8E53",
+            fontWeight: 600,
+            textDecoration: "none",
+            "&:hover": {
+              textDecoration: "underline",
+            },
+          }}
+        >
+          Login here
+        </Link>
       </Typography>
     </AuthFormWrapper>
   );
