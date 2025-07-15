@@ -42,18 +42,15 @@ const Home = () => {
     setError(null);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}summarizer/`,
+        {
+          dialogue: text,
+          mode: mode,
+        }
+      );
 
-      const mockSummaries = {
-        paragraph:
-          "This is a generated paragraph summary demonstrating how the output might look when using the paragraph summarization mode. The content would normally be dynamically generated based on the input text.",
-        bullets:
-          "• First key point extracted from the text\n• Second important concept summarized\n• Third main idea in bullet form\n• Final significant detail to remember",
-        questions:
-          "What is the main subject of this text?\n\nWhy is this topic important?\n\nHow does the text suggest we approach this subject?\n\nWhat are the key takeaways?",
-      };
-
-      setSummary(mockSummaries[mode]);
+      setSummary(response.data.data.summary);
     } catch (err) {
       setError("Failed to generate summary. Please try again.");
     } finally {
@@ -70,13 +67,20 @@ const Home = () => {
   };
 
   const confirmSave = async () => {
+    const response =
+      mode === "question" || mode === "bullets"
+        ? summary
+            .split(/\n{1,2}/)
+            .map((s) => s.trim())
+            .filter(Boolean)
+        : [summary.trim()];
+
     const payload = {
-      name: name || "Untitled",
+      name,
       type: mode,
       originalText: text,
       tags: ["A", "B", "C", "D"],
-      response: mode === "question" ? summary.split("\n\n") : [summary],
-      respose: mode === "bullet" ? summary.split("\n\n") : [summary],
+      response,
     };
 
     try {
@@ -165,7 +169,7 @@ const Home = () => {
         <Box flex={1} display="flex" flexDirection="column">
           <Slide direction="left" in={true} mountOnEnter unmountOnExit>
             <Box>
-              <OutputDisplay summary={summary} />
+              <OutputDisplay summary={summary} mode={mode} />
               <Box display="flex" justifyContent="center" mt={2}>
                 <Button
                   variant="contained"

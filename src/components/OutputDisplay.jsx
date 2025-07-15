@@ -1,9 +1,32 @@
 import { Box, Typography, TextField, useTheme } from "@mui/material";
 
-const OutputDisplay = ({ summary = "", readOnly = true, onChange }) => {
+const OutputDisplay = ({
+  summary = "",
+  readOnly = true,
+  onChange,
+  mode = "paragraph",
+}) => {
   const theme = useTheme();
-  const wordCount = summary.trim().split(/\s+/).filter(Boolean).length;
-  const sentenceCount = summary.split(/[.!?]/).filter((s) => s.trim()).length;
+
+  let formatted = summary;
+
+  if (mode === "bullets") {
+    formatted = summary
+      .split("\n")
+      .filter(Boolean)
+      .map((line) => `• ${line.trim().replace(/^[-•*]\s*/, "")}`)
+      .join("\n");
+  } else if (mode === "questions") {
+    formatted = summary
+      .split("?")
+      .map((q) => q.trim())
+      .filter(Boolean)
+      .map((q) => `${q}?`)
+      .join("\n\n");
+  }
+
+  const wordCount = formatted.trim().split(/\s+/).filter(Boolean).length;
+  const sentenceCount = formatted.split(/[.!?]/).filter((s) => s.trim()).length;
 
   return (
     <Box>
@@ -12,7 +35,7 @@ const OutputDisplay = ({ summary = "", readOnly = true, onChange }) => {
         minRows={12}
         fullWidth
         variant="outlined"
-        value={summary || "Your summary will appear here."}
+        value={formatted || "Your summary will appear here."}
         InputProps={{
           readOnly,
           sx: {
