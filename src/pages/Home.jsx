@@ -20,6 +20,7 @@ import ModeSelector from "../components/ModeSelector";
 import InputArea from "../components/InputArea";
 import OutputDisplay from "../components/OutputDisplay";
 import ButtonsBox from "../components/ButtonsBox";
+import CustomButton from "../components/CustomButton";
 
 const Home = () => {
   const theme = useTheme();
@@ -141,26 +142,17 @@ const Home = () => {
               <InputArea text={text} setText={setText} />
               <ButtonsBox setText={setText} />
               <Box display="flex" justifyContent="center" mt={2}>
-                <Button
-                  variant="contained"
+                <CustomButton
                   onClick={handleSummarize}
-                  disabled={isLoading}
-                  sx={{
-                    background:
-                      "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
-                    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
-                    "&:hover": {
-                      background:
-                        "linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)",
-                    },
-                    px: 4,
-                    py: 1.5,
-                    fontSize: "1rem",
-                    fontWeight: 600,
-                  }}
+                  isLoading={isLoading}
+                  loadingText="Summarizing..."
+                  gradient="linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)"
+                  hoverGradient="linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)"
+                  boxShadow="0 3px 5px 2px rgba(255, 105, 135, .3)"
+                  sx={{ px: 4, py: 1.5, fontSize: "1rem", fontWeight: 600 }}
                 >
-                  {isLoading ? "Summarizing..." : "Summarize"}
-                </Button>
+                  Summarize
+                </CustomButton>
               </Box>
             </Box>
           </Slide>
@@ -171,26 +163,16 @@ const Home = () => {
             <Box>
               <OutputDisplay summary={summary} mode={mode} />
               <Box display="flex" justifyContent="center" mt={2}>
-                <Button
-                  variant="contained"
+                <CustomButton
                   onClick={handleSaveClick}
                   disabled={!summary || isLoading}
-                  sx={{
-                    background:
-                      "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
-                    boxShadow: "0 3px 5px 2px rgba(33, 203, 243, .3)",
-                    "&:hover": {
-                      background:
-                        "linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)",
-                    },
-                    px: 4,
-                    py: 1.5,
-                    fontSize: "1rem",
-                    fontWeight: 600,
-                  }}
+                  gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
+                  hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
+                  boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
+                  sx={{ px: 4, py: 1.5, fontSize: "1rem", fontWeight: 600 }}
                 >
                   Save Summary
-                </Button>
+                </CustomButton>
               </Box>
             </Box>
           </Slide>
@@ -225,26 +207,22 @@ const Home = () => {
           />
         </DialogContent>
         <DialogActions>
-          <Button
+          <CustomButton
             onClick={() => setOpenDialog(false)}
             disabled={isLoading}
             sx={{ color: theme.palette.text.secondary }}
           >
             Cancel
-          </Button>
-          <Button
-            variant="contained"
+          </CustomButton>
+          <CustomButton
             onClick={confirmSave}
-            disabled={isLoading}
-            sx={{
-              background: "linear-gradient(45deg, #4CAF50 30%, #8BC34A 90%)",
-              "&:hover": {
-                background: "linear-gradient(45deg, #8BC34A 30%, #4CAF50 90%)",
-              },
-            }}
+            isLoading={isLoading}
+            loadingText="Saving..."
+            gradient="linear-gradient(45deg, #4CAF50 30%, #8BC34A 90%)"
+            hoverGradient="linear-gradient(45deg, #8BC34A 30%, #4CAF50 90%)"
           >
-            {isLoading ? "Saving..." : "Save"}
-          </Button>
+            Save
+          </CustomButton>
         </DialogActions>
       </Dialog>
     </Container>

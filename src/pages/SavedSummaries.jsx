@@ -11,7 +11,6 @@ import {
   Paper,
   CircularProgress,
   Link,
-  Button,
   Box,
   Chip,
   useTheme,
@@ -29,6 +28,8 @@ import {
   Edit as EditIcon,
   Delete as DeleteIcon,
 } from "@mui/icons-material";
+
+import CustomButton from "../components/CustomButton";
 
 const SavedSummaries = () => {
   const [summaries, setSummaries] = useState([]);
@@ -136,20 +137,14 @@ const SavedSummaries = () => {
         <Typography variant="h4" component="h1" fontWeight={600}>
           My Saved Summaries
         </Typography>
-        <Button
-          variant="contained"
-          color="primary"
+        <CustomButton
           onClick={() => navigate("/")}
-          sx={{
-            background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
-            boxShadow: "0 3px 5px 2px rgba(33, 203, 243, .3)",
-            "&:hover": {
-              background: "linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)",
-            },
-          }}
+          gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
+          hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
+          boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
         >
           Create New
-        </Button>
+        </CustomButton>
       </Box>
 
       {error && (
@@ -284,20 +279,18 @@ const SavedSummaries = () => {
                   </TableCell>
                   <TableCell>
                     <Box display="flex" gap={1}>
-                      <Button
+                      <CustomButton
                         size="small"
                         startIcon={<EditIcon />}
                         onClick={() => navigate(`/summary/${summary.id}`)}
                         sx={{
                           color: theme.palette.text.secondary,
-                          "&:hover": {
-                            color: theme.palette.primary.main,
-                          },
+                          "&:hover": { color: theme.palette.primary.main },
                         }}
                       >
                         Edit
-                      </Button>
-                      <Button
+                      </CustomButton>
+                      <CustomButton
                         size="small"
                         startIcon={
                           deletingId === summary.id ? (
@@ -310,13 +303,11 @@ const SavedSummaries = () => {
                         disabled={deletingId === summary.id}
                         sx={{
                           color: theme.palette.text.secondary,
-                          "&:hover": {
-                            color: theme.palette.error.main,
-                          },
+                          "&:hover": { color: theme.palette.error.main },
                         }}
                       >
                         Delete
-                      </Button>
+                      </CustomButton>
                     </Box>
                   </TableCell>
                 </TableRow>

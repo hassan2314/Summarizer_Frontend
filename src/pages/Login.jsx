@@ -6,6 +6,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../store/userSlice";
 import { useNavigate, Link } from "react-router-dom";
+import CustomButton from "../components/CustomButton";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -68,26 +69,20 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <Button
+        <CustomButton
           type="submit"
-          variant="contained"
+          onClick={handleLogin}
           fullWidth
           size="large"
-          onClick={handleLogin}
-          sx={{
-            mt: 2,
-            py: 1.5,
-            fontWeight: 600,
-            background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
-            boxShadow: "0 3px 5px 2px rgba(33, 203, 243, .3)",
-            "&:hover": {
-              background: "linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)",
-            },
-          }}
-          disabled={isLoading}
+          isLoading={isLoading}
+          loadingText="Logging in..."
+          gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
+          hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
+          boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
+          sx={{ mt: 2, py: 1.5, fontWeight: 600 }}
         >
-          {isLoading ? "Logging in..." : "Login"}
-        </Button>
+          Login
+        </CustomButton>
       </form>
 
       <Typography variant="body2" sx={{ mt: 3, textAlign: "center" }}>

@@ -5,7 +5,6 @@ import {
   Typography,
   CircularProgress,
   Box,
-  Button,
   Stack,
   Chip,
   Alert,
@@ -18,6 +17,7 @@ import {
 import axios from "axios";
 import InputArea from "../components/InputArea";
 import OutputDisplay from "../components/OutputDisplay";
+import CustomButton from "../components/CustomButton";
 import {
   ArrowBack as BackIcon,
   Delete as DeleteIcon,
@@ -171,13 +171,12 @@ const SummaryDetail = () => {
         <Alert severity="error" sx={{ mb: 3 }}>
           Summary not found. It may have been deleted.
         </Alert>
-        <Button
-          variant="contained"
+        <CustomButton
           startIcon={<BackIcon />}
           onClick={() => navigate("/saved")}
         >
           Back to Saved Summaries
-        </Button>
+        </CustomButton>
       </Container>
     );
   }
@@ -274,42 +273,36 @@ const SummaryDetail = () => {
           />
 
           <Stack direction="row" spacing={2} justifyContent="flex-end" mt={2}>
-            <Button
-              variant="contained"
+            <CustomButton
               color="error"
               startIcon={
                 isDeleting ? <CircularProgress size={20} /> : <DeleteIcon />
               }
               onClick={handleDelete}
-              disabled={isDeleting}
+              isLoading={isDeleting}
+              loadingText="Deleting..."
               sx={{
                 px: 3,
-                "&:hover": {
-                  bgcolor: theme.palette.error.dark,
-                },
+                "&:hover": { bgcolor: theme.palette.error.dark },
               }}
             >
-              {isDeleting ? "Deleting..." : "Delete"}
-            </Button>
-            <Button
-              variant="contained"
+              Delete
+            </CustomButton>
+            <CustomButton
               color="primary"
               startIcon={
                 isUpdating ? <CircularProgress size={20} /> : <SaveIcon />
               }
               onClick={handleUpdate}
-              disabled={isUpdating || !updatedResponse}
-              sx={{
-                px: 3,
-                background: "linear-gradient(45deg, #4CAF50 30%, #8BC34A 90%)",
-                "&:hover": {
-                  background:
-                    "linear-gradient(45deg, #8BC34A 30%, #4CAF50 90%)",
-                },
-              }}
+              isLoading={isUpdating}
+              loadingText="Saving..."
+              disabled={!updatedResponse}
+              gradient="linear-gradient(45deg, #4CAF50 30%, #8BC34A 90%)"
+              hoverGradient="linear-gradient(45deg, #8BC34A 30%, #4CAF50 90%)"
+              sx={{ px: 3 }}
             >
-              {isUpdating ? "Saving..." : "Save Changes"}
-            </Button>
+              Save Changes
+            </CustomButton>
           </Stack>
         </Box>
       </Box>
