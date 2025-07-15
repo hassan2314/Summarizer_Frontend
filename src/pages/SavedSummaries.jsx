@@ -134,7 +134,7 @@ const SavedSummaries = () => {
         alignItems="center"
         mb={3}
       >
-        <Typography variant="h4" component="h1" fontWeight={600}>
+        <Typography variant="h5" component="h2" fontWeight={600}>
           My Saved Summaries
         </Typography>
         <CustomButton
@@ -287,9 +287,7 @@ const SavedSummaries = () => {
                           color: theme.palette.text.secondary,
                           "&:hover": { color: theme.palette.primary.main },
                         }}
-                      >
-                        Edit
-                      </CustomButton>
+                      ></CustomButton>
                       <CustomButton
                         size="small"
                         startIcon={
@@ -305,9 +303,7 @@ const SavedSummaries = () => {
                           color: theme.palette.text.secondary,
                           "&:hover": { color: theme.palette.error.main },
                         }}
-                      >
-                        Delete
-                      </CustomButton>
+                      ></CustomButton>
                     </Box>
                   </TableCell>
                 </TableRow>
