@@ -10,23 +10,23 @@ const OutputDisplay = ({
 
   let formatted = summary;
 
-  if (mode === "bullets") {
-    formatted = summary
-      .split("\n")
-      .filter(Boolean)
-      .map((line) => `• ${line.trim().replace(/^[-•*]\s*/, "")}`)
-      .join("\n");
-  } else if (mode === "questions") {
-    formatted = summary
-      .split("?")
-      .map((q) => q.trim())
-      .filter(Boolean)
-      .map((q) => `${q}?`)
-      .join("\n\n");
+  if (Array.isArray(summary)) {
+    if (mode === "questions") {
+      formatted = summary.map((q, i) => `${i + 1}. ${q}`).join("\n\n");
+    } else if (mode === "bullets") {
+      formatted = summary.map((line) => `• ${line}`).join("\n");
+    }
   }
 
-  const wordCount = formatted.trim().split(/\s+/).filter(Boolean).length;
-  const sentenceCount = formatted.split(/[.!?]/).filter((s) => s.trim()).length;
+  const wordCount =
+    typeof formatted === "string"
+      ? formatted.trim().split(/\s+/).filter(Boolean).length
+      : 0;
+
+  const sentenceCount =
+    typeof formatted === "string"
+      ? formatted.split(/[.!?]/).filter((s) => s.trim()).length
+      : 0;
 
   return (
     <Box>
@@ -35,7 +35,11 @@ const OutputDisplay = ({
         minRows={12}
         fullWidth
         variant="outlined"
-        value={formatted || "Your summary will appear here."}
+        value={
+          formatted && typeof formatted === "string"
+            ? formatted
+            : "Your summary will appear here."
+        }
         InputProps={{
           readOnly,
           sx: {

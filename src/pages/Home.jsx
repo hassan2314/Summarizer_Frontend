@@ -51,7 +51,9 @@ const Home = () => {
         }
       );
 
-      setSummary(response.data.data.summary);
+      const result = response.data.data;
+
+      setSummary(result.data);
     } catch (err) {
       setError("Failed to generate summary. Please try again.");
     } finally {
@@ -143,6 +145,7 @@ const Home = () => {
               <ButtonsBox setText={setText} />
               <Box display="flex" justifyContent="center" mt={2}>
                 <CustomButton
+                  size="small"
                   onClick={handleSummarize}
                   isLoading={isLoading}
                   loadingText="Summarizing..."
@@ -164,6 +167,7 @@ const Home = () => {
               <OutputDisplay summary={summary} mode={mode} />
               <Box display="flex" justifyContent="center" mt={2}>
                 <CustomButton
+                  size="small"
                   onClick={handleSaveClick}
                   disabled={!summary || isLoading}
                   gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
