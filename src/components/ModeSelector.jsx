@@ -34,6 +34,7 @@ const ModeSelector = ({ mode, setMode }) => {
       <Tab label="Paragraph" value="paragraph" />
       <Tab label="Bullet Points" value="bullets" />
       <Tab label="Questions" value="questions" />
+      <Tab label="Tags" value="tags" />
     </Tabs>
   );
 };
