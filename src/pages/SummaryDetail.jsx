@@ -15,6 +15,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import axios from "axios";
+import API from "../lib/axiosInstance";
 import InputArea from "../components/InputArea";
 import OutputDisplay from "../components/OutputDisplay";
 import CustomButton from "../components/CustomButton";
@@ -60,21 +61,19 @@ const SummaryDetail = () => {
     try {
       setLoading(true);
       setError(null);
-      const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}summary/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          withCredentials: true,
-        }
-      );
+      const res = await API.get(`summary/${id}`);
       setSummary(res.data.data);
       setUpdatedResponse(
-        Array.isArray(res.data.data.response)
-          ? res.data.data.response.join("\n\n")
-          : res.data.data.response
+        res.data.data.response
+          .map(
+            (sentence) => sentence.charAt(0).toUpperCase() + sentence.slice(1)
+          )
+          .join("\n\n")
       );
+
+      setTimeout(() => {
+        console.log(res.data.data.response);
+      }, 1000);
     } catch (error) {
       console.error("Failed to load summary detail:", error);
       setError("Failed to load summary. Please try again.");
@@ -97,16 +96,7 @@ const SummaryDetail = () => {
           .filter((item) => item.trim() !== ""),
       };
 
-      const res = await axios.put(
-        `${import.meta.env.VITE_API_URL}summary/${id}`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          withCredentials: true,
-        }
-      );
+      const res = await API.put(`summary/${id}`, payload);
       setSummary(res.data.data);
     } catch (error) {
       console.error("Failed to update summary:", error);
@@ -123,12 +113,7 @@ const SummaryDetail = () => {
     try {
       setIsDeleting(true);
       setError(null);
-      await axios.delete(`${import.meta.env.VITE_API_URL}summary/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        withCredentials: true,
-      });
+      await API.delete(`summary/${id}`);
       navigate("/saved");
     } catch (error) {
       console.error("Failed to delete summary:", error);

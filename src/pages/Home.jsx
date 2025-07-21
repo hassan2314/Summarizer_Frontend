@@ -15,6 +15,7 @@ import {
   Alert,
 } from "@mui/material";
 import axios from "axios";
+import API from "../lib/axiosInstance";
 
 import ModeSelector from "../components/ModeSelector";
 import InputArea from "../components/InputArea";
@@ -43,13 +44,10 @@ const Home = () => {
     setError(null);
 
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}summarizer/`,
-        {
-          dialogue: text,
-          mode: mode,
-        }
-      );
+      const response = await API.post(`summarizer/`, {
+        dialogue: text,
+        mode: mode,
+      });
 
       const result = response.data.data;
 
@@ -70,13 +68,17 @@ const Home = () => {
   };
 
   const confirmSave = async () => {
+    console.log("Saving summary...", summary);
+
     const response =
-      mode === "question" || mode === "bullets"
+      (mode === "question" || mode === "bullets") && typeof summary === "string"
         ? summary
             .split(/\n{1,2}/)
             .map((s) => s.trim())
             .filter(Boolean)
-        : [summary.trim()];
+        : Array.isArray(summary)
+        ? summary.map((s) => s.trim()).filter(Boolean)
+        : [summary?.toString().trim()];
 
     const payload = {
       name,
@@ -88,16 +90,7 @@ const Home = () => {
 
     try {
       setIsLoading(true);
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}summary`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          withCredentials: true,
-        }
-      );
+      const res = await API.post(`summary`, payload);
       setOpenDialog(false);
       setName("");
       setError(null);

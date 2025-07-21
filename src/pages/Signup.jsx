@@ -3,6 +3,7 @@ import { Typography, Alert, Fade } from "@mui/material";
 import FormInput from "../components/FormInput";
 import AuthFormWrapper from "../components/AuthFormWrapper";
 import axios from "axios";
+import API from "../lib/axiosInstance";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../store/userSlice";
 import { useNavigate, Link } from "react-router-dom";
@@ -35,14 +36,11 @@ const Signup = () => {
     setIsLoading(true);
 
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}users/signup`,
-        {
-          email,
-          password,
-          name,
-        }
-      );
+      const res = await API.post(`users/signup`, {
+        email,
+        password,
+        name,
+      });
       if (res) {
         navigate("/login");
       }

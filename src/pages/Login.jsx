@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Typography, Alert, Fade } from "@mui/material";
 import FormInput from "../components/FormInput";
 import AuthFormWrapper from "../components/AuthFormWrapper";
-import axios from "axios";
+import API from "../lib/axiosInstance";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../store/userSlice";
 import { useNavigate, Link } from "react-router-dom";
@@ -23,13 +23,10 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}users/login`,
-        {
-          email,
-          password,
-        }
-      );
+      const res = await API.post(`users/login`, {
+        email,
+        password,
+      });
 
       const { user, token } = res.data.data;
       dispatch(loginSuccess({ user, token }));

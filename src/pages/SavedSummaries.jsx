@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container, Typography, Box, Alert, Skeleton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import API from "../lib/axiosInstance";
 import CustomButton from "../components/CustomButton";
 import SummaryTable from "../components/SummaryTable";
 
@@ -16,12 +16,7 @@ const SavedSummaries = () => {
     try {
       setLoading(true);
       setError(null);
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}summary`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        withCredentials: true,
-      });
+      const res = await API.get(`summary`);
       setSummaries(res.data.data);
     } catch (error) {
       setError("Failed to load summaries. Please try again.");
@@ -33,12 +28,7 @@ const SavedSummaries = () => {
   const handleDelete = async (id) => {
     try {
       setDeletingId(id);
-      await axios.delete(`${import.meta.env.VITE_API_URL}summary/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        withCredentials: true,
-      });
+      await API.delete(`summary/${id}`);
       await fetchSummaries();
     } catch (error) {
       setError("Failed to delete summary. Please try again.");
