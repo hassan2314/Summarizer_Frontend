@@ -18,6 +18,7 @@ const ButtonsBox = ({ setText }) => {
       <Button
         variant="outlined"
         component="label"
+        size="small"
         sx={{
           color: theme.palette.text.primary,
           borderColor: theme.palette.divider,
@@ -33,6 +34,7 @@ const ButtonsBox = ({ setText }) => {
       <Button
         variant="outlined"
         onClick={() => setText("")}
+        size="small"
         sx={{
           color: theme.palette.text.primary,
           borderColor: theme.palette.divider,

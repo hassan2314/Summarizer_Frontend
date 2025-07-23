@@ -55,7 +55,7 @@ const OutputDisplay = ({
       />
 
       <Typography
-        mt={2}
+        mt={1}
         variant="caption"
         sx={{
           color: theme.palette.text.secondary,
@@ -64,7 +64,7 @@ const OutputDisplay = ({
         }}
       >
         {sentenceCount} sentence{sentenceCount !== 1 && "s"} • {wordCount} word
-        {wordCount !== 1 && "s"}
+        {wordCount !== 1 && "s"} • {formatted.length} characters {mode}
       </Typography>
     </Box>
   );

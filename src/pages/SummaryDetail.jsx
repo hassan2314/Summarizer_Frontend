@@ -14,7 +14,7 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
-import axios from "axios";
+import TagDisplay from "../components/TagDisplay";
 import API from "../lib/axiosInstance";
 import InputArea from "../components/InputArea";
 import OutputDisplay from "../components/OutputDisplay";
@@ -37,6 +37,7 @@ const SummaryDetail = () => {
   const theme = useTheme();
 
   const [summary, setSummary] = useState(null);
+  const [tags, setTags] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [updatedResponse, setUpdatedResponse] = useState("");
@@ -62,7 +63,31 @@ const SummaryDetail = () => {
       setLoading(true);
       setError(null);
       const res = await API.get(`summary/${id}`);
-      setSummary(res.data.data);
+      const data = res.data.data;
+      setSummary(data);
+      setTags(data.tags);
+
+      const responseLines = res.data.data.response;
+
+      if (data.type === "bullets") {
+        let formattedResponse = "";
+
+        if (responseLines.every((line) => line.charAt(0) === "•")) {
+          // If lines already start with bullet
+          formattedResponse = responseLines
+            .map((line) => line.charAt(0).toUpperCase() + line.slice(1))
+            .join("\n\n");
+        } else {
+          // Add bullets and capitalize first letter
+
+          formattedResponse = responseLines
+            .map((line) => `• ${line.charAt(0).toUpperCase()}${line.slice(1)}`)
+            .join("\n\n");
+        }
+
+        setUpdatedResponse(formattedResponse);
+      }
+
       setUpdatedResponse(
         res.data.data.response
           .map(
@@ -70,10 +95,6 @@ const SummaryDetail = () => {
           )
           .join("\n\n")
       );
-
-      setTimeout(() => {
-        console.log(res.data.data.response);
-      }, 1000);
     } catch (error) {
       console.error("Failed to load summary detail:", error);
       setError("Failed to load summary. Please try again.");
@@ -235,7 +256,7 @@ const SummaryDetail = () => {
           />
         </Box>
 
-        <Divider orientation="vertical" flexItem />
+        {/* <Divider orientation="vertical" flexItem /> */}
 
         {/* Summary Section */}
         <Box flex={1} display="flex" flexDirection="column">
@@ -244,18 +265,18 @@ const SummaryDetail = () => {
           </Typography>
           <OutputDisplay
             summary={updatedResponse}
+            mode={summary.type}
             readOnly={false}
             onChange={(e) => setUpdatedResponse(e.target.value)}
             sx={{
               flex: 1,
-              "& .MuiOutlinedInput-root": {
-                bgcolor:
-                  theme.palette.mode === "light"
-                    ? "rgba(33, 150, 243, 0.04)"
-                    : "rgba(33, 150, 243, 0.08)",
-              },
+              bgcolor:
+                theme.palette.mode === "light"
+                  ? "rgba(33, 150, 243, 0.04)"
+                  : "rgba(33, 150, 243, 0.08)",
             }}
           />
+          <TagDisplay tags={summary.tags} />
 
           <Stack direction="row" spacing={2} justifyContent="flex-end" mt={2}>
             <CustomButton
