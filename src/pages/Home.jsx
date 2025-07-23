@@ -21,10 +21,12 @@ import InputArea from "../components/InputArea";
 import OutputDisplay from "../components/OutputDisplay";
 import ButtonsBox from "../components/ButtonsBox";
 import CustomButton from "../components/CustomButton";
+import TagDisplay from "../components/TagDisplay";
 
 const Home = () => {
   const theme = useTheme();
   const [mode, setMode] = useState("paragraph");
+  const [tags, setTags] = useState("");
   const [length, setLength] = useState(3);
   const [text, setText] = useState("");
   const [summary, setSummary] = useState("");
@@ -49,7 +51,7 @@ const Home = () => {
       });
 
       const result = response.data.data;
-
+      setTags(result.tags);
       setSummary(result.data);
     } catch (err) {
       setError("Failed to generate summary. Please try again.");
@@ -69,6 +71,7 @@ const Home = () => {
   const confirmSave = async () => {
     console.log("Saving summary...", summary);
 
+    // Convert summary to array based on mode and type
     const response =
       (mode === "question" || mode === "bullets") && typeof summary === "string"
         ? summary
@@ -79,21 +82,33 @@ const Home = () => {
         ? summary.map((s) => s.trim()).filter(Boolean)
         : [summary?.toString().trim()];
 
+    // Ensure tags are in array format (String[])
+    const formattedTags = Array.isArray(tags)
+      ? tags.map((tag) => tag.trim()).filter(Boolean)
+      : typeof tags === "string"
+      ? tags
+          .split("\n")
+          .map((tag) => tag.replace(/^\*?\s*/, "").trim())
+          .filter(Boolean)
+      : [];
+
     const payload = {
       name,
       type: mode,
       originalText: text,
-      tags: ["A", "B", "C", "D"],
+      tags: formattedTags,
       response,
     };
 
     try {
       setIsLoading(true);
       const res = await API.post(`summary`, payload);
+      console.log("Summary saved:", res.data);
       setOpenDialog(false);
       setName("");
       setError(null);
     } catch (error) {
+      console.error("Save error:", error);
       setError("Failed to save summary. Please try again.");
     } finally {
       setIsLoading(false);
@@ -163,6 +178,7 @@ const Home = () => {
           <Slide direction="left" in={true} mountOnEnter unmountOnExit>
             <Box>
               <OutputDisplay summary={summary} mode={mode} />
+              <TagDisplay tags={tags} />
               <Box display="flex" justifyContent="center" mt={2}>
                 <CustomButton
                   size="small"

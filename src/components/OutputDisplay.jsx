@@ -55,7 +55,7 @@ const OutputDisplay = ({
       />
 
       <Typography
-        mt={2}
+        mt={1}
         variant="caption"
         sx={{
           color: theme.palette.text.secondary,
