@@ -42,7 +42,7 @@ API.interceptors.response.use(
             withCredentials: true, // Needed to send refreshToken cookie
           }
         );
-
+        console.log(res.data.data.accessToken);
         const newAccessToken = res.data.data.accessToken;
 
         // Store new token and retry original request
@@ -54,7 +54,9 @@ API.interceptors.response.use(
         return API(originalRequest);
       } catch (refreshError) {
         // Refresh failed – handle logout
+        localStorage.removeItem("user");
         localStorage.removeItem("token");
+        localStorage.removeItem("status");
         window.location.href = "/login";
         return Promise.reject(refreshError);
       }

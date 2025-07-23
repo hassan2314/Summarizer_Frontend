@@ -62,18 +62,26 @@ const SummaryDetail = () => {
       setLoading(true);
       setError(null);
       const res = await API.get(`summary/${id}`);
-      setSummary(res.data.data);
-      setUpdatedResponse(
-        res.data.data.response
-          .map(
-            (sentence) => sentence.charAt(0).toUpperCase() + sentence.slice(1)
-          )
-          .join("\n\n")
-      );
+      const data = res.data.data;
+      setSummary(data);
 
-      setTimeout(() => {
-        console.log(res.data.data.response);
-      }, 1000);
+      const responseLines = res.data.data.response;
+
+      let formattedResponse = "";
+
+      if (responseLines.every((line) => line.charAt(0) === "•")) {
+        // If lines already start with bullet
+        formattedResponse = responseLines
+          .map((line) => line.charAt(0).toUpperCase() + line.slice(1))
+          .join("\n\n");
+      } else {
+        // Add bullets and capitalize first letter
+        formattedResponse = responseLines
+          .map((line) => `• ${line.charAt(0).toUpperCase()}${line.slice(1)}`)
+          .join("\n\n");
+      }
+
+      setUpdatedResponse(formattedResponse);
     } catch (error) {
       console.error("Failed to load summary detail:", error);
       setError("Failed to load summary. Please try again.");
@@ -244,6 +252,7 @@ const SummaryDetail = () => {
           </Typography>
           <OutputDisplay
             summary={updatedResponse}
+            mode={summary.type}
             readOnly={false}
             onChange={(e) => setUpdatedResponse(e.target.value)}
             sx={{

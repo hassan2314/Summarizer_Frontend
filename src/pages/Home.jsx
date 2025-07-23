@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   Container,
   Box,
-  Button,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -13,8 +12,8 @@ import {
   Fade,
   Slide,
   Alert,
+  Button,
 } from "@mui/material";
-import axios from "axios";
 import API from "../lib/axiosInstance";
 
 import ModeSelector from "../components/ModeSelector";
@@ -145,7 +144,13 @@ const Home = () => {
                   gradient="linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)"
                   hoverGradient="linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)"
                   boxShadow="0 3px 5px 2px rgba(255, 105, 135, .3)"
-                  sx={{ px: 4, py: 1.5, fontSize: "1rem", fontWeight: 600 }}
+                  // sx={{ px: 2, py: 1, fontSize: "1rem", fontWeight: 600 }}
+                  sx={{
+                    fontSize: "14px",
+                    fontWeight: 500,
+                    color: "white",
+                    textTransform: "capitalize",
+                  }}
                 >
                   Summarize
                 </CustomButton>
@@ -166,7 +171,13 @@ const Home = () => {
                   gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
                   hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
                   boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
-                  sx={{ px: 4, py: 1.5, fontSize: "1rem", fontWeight: 600 }}
+                  // sx={{ px: 2, py: 1, fontSize: "1rem", fontWeight: 600 }}
+                  sx={{
+                    fontSize: "14px",
+                    fontWeight: 500,
+                    color: "white",
+                    textTransform: "capitalize",
+                  }}
                 >
                   Save Summary
                 </CustomButton>
@@ -181,13 +192,15 @@ const Home = () => {
         onClose={() => !isLoading && setOpenDialog(false)}
         maxWidth="sm"
         fullWidth
-        PaperProps={{
-          sx: {
-            background:
-              theme.palette.mode === "light"
-                ? "linear-gradient(145deg, #f5f7fa, #ffffff)"
-                : "linear-gradient(145deg, #1a1a2e, #16213e)",
-            borderRadius: 3,
+        slotProps={{
+          paper: {
+            sx: {
+              background:
+                theme.palette.mode === "light"
+                  ? "linear-gradient(145deg, #f5f7fa, #ffffff)"
+                  : "linear-gradient(145deg, #1a1a2e, #16213e)",
+              borderRadius: 3,
+            },
           },
         }}
       >
