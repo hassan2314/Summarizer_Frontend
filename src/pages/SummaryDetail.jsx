@@ -5,12 +5,20 @@ import {
   Typography,
   CircularProgress,
   Box,
-  Button,
   Stack,
   Chip,
+  Alert,
+  Divider,
   useTheme,
   Avatar,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
+import TagDisplay from "../components/TagDisplay";
+import API from "../lib/axiosInstance";
+import InputArea from "../components/InputArea";
+import OutputDisplay from "../components/OutputDisplay";
+import CustomButton from "../components/CustomButton";
 import {
   ArrowBack as BackIcon,
   Delete as DeleteIcon,
@@ -22,9 +30,6 @@ import {
   Schedule as TimeIcon,
   CalendarToday as DateIcon,
 } from "@mui/icons-material";
-import axios from "axios";
-import InputArea from "../components/InputArea";
-import OutputDisplay from "../components/OutputDisplay";
 
 const SummaryDetail = () => {
   const { id } = useParams();
@@ -32,35 +37,12 @@ const SummaryDetail = () => {
   const theme = useTheme();
 
   const [summary, setSummary] = useState(null);
+  const [tags, setTags] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [updatedResponse, setUpdatedResponse] = useState("");
-
-  useEffect(() => {
-    const fetchSummary = async () => {
-      try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_API_URL}summary/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-            withCredentials: true,
-          }
-        );
-        setSummary(res.data.data);
-        setUpdatedResponse(
-          Array.isArray(res.data.data.response)
-            ? res.data.data.response.join("\n\n")
-            : res.data.data.response
-        );
-      } catch (error) {
-        console.error("Failed to load summary detail:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchSummary();
-  }, [id]);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const getTypeIcon = () => {
     if (!summary) return <ParagraphIcon />;
@@ -75,6 +57,93 @@ const SummaryDetail = () => {
         return <ParagraphIcon />;
     }
   };
+
+  const fetchSummary = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const res = await API.get(`summary/${id}`);
+      const data = res.data.data;
+      setSummary(data);
+      setTags(data.tags);
+
+      const responseLines = res.data.data.response;
+
+      if (data.type === "bullets") {
+        let formattedResponse = "";
+
+        if (responseLines.every((line) => line.charAt(0) === "•")) {
+          // If lines already start with bullet
+          formattedResponse = responseLines
+            .map((line) => line.charAt(0).toUpperCase() + line.slice(1))
+            .join("\n\n");
+        } else {
+          // Add bullets and capitalize first letter
+
+          formattedResponse = responseLines
+            .map((line) => `• ${line.charAt(0).toUpperCase()}${line.slice(1)}`)
+            .join("\n\n");
+        }
+
+        setUpdatedResponse(formattedResponse);
+      }
+
+      setUpdatedResponse(
+        res.data.data.response
+          .map(
+            (sentence) => sentence.charAt(0).toUpperCase() + sentence.slice(1)
+          )
+          .join("\n\n")
+      );
+    } catch (error) {
+      console.error("Failed to load summary detail:", error);
+      setError("Failed to load summary. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSummary();
+  }, [id]);
+
+  const handleUpdate = async () => {
+    try {
+      setIsUpdating(true);
+      setError(null);
+      const payload = {
+        response: updatedResponse
+          .split("\n\n")
+          .filter((item) => item.trim() !== ""),
+      };
+
+      const res = await API.put(`summary/${id}`, payload);
+      setSummary(res.data.data);
+    } catch (error) {
+      console.error("Failed to update summary:", error);
+      setError("Failed to update summary. Please try again.");
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm("Are you sure you want to delete this summary?"))
+      return;
+
+    try {
+      setIsDeleting(true);
+      setError(null);
+      await API.delete(`summary/${id}`);
+      navigate("/saved");
+    } catch (error) {
+      console.error("Failed to delete summary:", error);
+      setError("Failed to delete summary. Please try again.");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -86,62 +155,57 @@ const SummaryDetail = () => {
     });
   };
 
-  const handleUpdate = async () => {
-    try {
-      const payload = {
-        response: updatedResponse
-          .split("\n\n")
-          .filter((item) => item.trim() !== ""),
-      };
-
-      const res = await axios.put(
-        `${import.meta.env.VITE_API_URL}summary/${id}`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          withCredentials: true,
-        }
-      );
-      setSummary(res.data.data);
-    } catch (error) {
-      console.error("Failed to update summary:", error);
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}summary/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        withCredentials: true,
-      });
-      navigate("/saved");
-    } catch (error) {
-      console.error("Failed to delete summary:", error);
-    }
-  };
-
-  if (loading) {
+  if (loading && !summary) {
     return (
-      <Container sx={{ mt: 4, display: "flex", justifyContent: "center" }}>
-        <CircularProgress />
+      <Container
+        maxWidth="lg"
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "60vh",
+        }}
+      >
+        <CircularProgress size={60} />
       </Container>
     );
   }
 
-  if (!summary) {
+  if (!summary && !loading) {
     return (
-      <Container sx={{ mt: 4 }}>
-        <Typography color="error">Summary not found.</Typography>
+      <Container maxWidth="lg" sx={{ mt: 4 }}>
+        <Alert severity="error" sx={{ mb: 3 }}>
+          Summary not found. It may have been deleted.
+        </Alert>
+        <CustomButton
+          startIcon={<BackIcon />}
+          onClick={() => navigate("/saved")}
+        >
+          Back to Saved Summaries
+        </CustomButton>
       </Container>
     );
   }
 
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
+      <Box display="flex" alignItems="center" mb={2}>
+        <Tooltip title="Back to saved summaries">
+          <IconButton onClick={() => navigate("/saved")} sx={{ mr: 2 }}>
+            <BackIcon />
+          </IconButton>
+        </Tooltip>
+        <Typography variant="h4" component="h1" fontWeight={600}>
+          {summary.name || "Untitled Summary"}
+        </Typography>
+      </Box>
+
+      {error && (
+        <Alert severity="error" sx={{ mb: 3 }} onClose={() => setError(null)}>
+          {error}
+        </Alert>
+      )}
+
       <Box display="flex" alignItems="center" gap={2} mb={3}>
         <Chip
           avatar={<Avatar>{getTypeIcon()}</Avatar>}
@@ -173,30 +237,78 @@ const SummaryDetail = () => {
         </Box>
       </Box>
 
-      <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={2}>
-        {/* Left: Original Text */}
+      <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={3}>
+        {/* Original Text Section */}
         <Box flex={1} display="flex" flexDirection="column">
-          <InputArea text={summary.originalText} readOnly />
-          <Box display="flex" justifyContent="center" mt={2}>
-            <Button variant="outlined" disabled>
-              Original Text
-            </Button>
-          </Box>
+          <Typography variant="h6" gutterBottom>
+            Original Text
+          </Typography>
+          <InputArea
+            text={summary.originalText}
+            readOnly
+            sx={{
+              flex: 1,
+              bgcolor:
+                theme.palette.mode === "light"
+                  ? "rgba(0, 0, 0, 0.04)"
+                  : "rgba(255, 255, 255, 0.04)",
+            }}
+          />
         </Box>
 
+        {/* <Divider orientation="vertical" flexItem /> */}
+
+        {/* Summary Section */}
         <Box flex={1} display="flex" flexDirection="column">
+          <Typography variant="h6" gutterBottom>
+            Summary
+          </Typography>
           <OutputDisplay
             summary={updatedResponse}
+            mode={summary.type}
             readOnly={false}
             onChange={(e) => setUpdatedResponse(e.target.value)}
+            sx={{
+              flex: 1,
+              bgcolor:
+                theme.palette.mode === "light"
+                  ? "rgba(33, 150, 243, 0.04)"
+                  : "rgba(33, 150, 243, 0.08)",
+            }}
           />
-          <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
-            <Button variant="contained" color="success" onClick={handleUpdate}>
-              Update
-            </Button>
-            <Button variant="contained" color="error" onClick={handleDelete}>
+          <TagDisplay tags={summary.tags} />
+
+          <Stack direction="row" spacing={2} justifyContent="flex-end" mt={2}>
+            <CustomButton
+              color="error"
+              startIcon={
+                isDeleting ? <CircularProgress size={20} /> : <DeleteIcon />
+              }
+              onClick={handleDelete}
+              isLoading={isDeleting}
+              loadingText="Deleting..."
+              sx={{
+                px: 3,
+                "&:hover": { bgcolor: theme.palette.error.dark },
+              }}
+            >
               Delete
-            </Button>
+            </CustomButton>
+            <CustomButton
+              color="primary"
+              startIcon={
+                isUpdating ? <CircularProgress size={20} /> : <SaveIcon />
+              }
+              onClick={handleUpdate}
+              isLoading={isUpdating}
+              loadingText="Saving..."
+              disabled={!updatedResponse}
+              gradient="linear-gradient(45deg, #4CAF50 30%, #8BC34A 90%)"
+              hoverGradient="linear-gradient(45deg, #8BC34A 30%, #4CAF50 90%)"
+              sx={{ px: 3 }}
+            >
+              Save Changes
+            </CustomButton>
           </Stack>
         </Box>
       </Box>

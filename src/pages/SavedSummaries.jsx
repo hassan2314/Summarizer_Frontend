@@ -1,103 +1,100 @@
 import React, { useEffect, useState } from "react";
-import {
-  Container,
-  Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  CircularProgress,
-  Link,
-} from "@mui/material";
+import { Container, Typography, Box, Alert, Skeleton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import API from "../lib/axiosInstance";
+import CustomButton from "../components/CustomButton";
+import SummaryTable from "../components/SummaryTable";
 
 const SavedSummaries = () => {
   const [summaries, setSummaries] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
   const navigate = useNavigate();
 
+  const fetchSummaries = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const res = await API.get(`summary`);
+      setSummaries(res.data.data);
+    } catch (error) {
+      setError("Failed to load summaries. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      setDeletingId(id);
+      await API.delete(`summary/${id}`);
+      await fetchSummaries();
+    } catch (error) {
+      setError("Failed to delete summary. Please try again.");
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   useEffect(() => {
-    const fetchSummaries = async () => {
-      try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}summary`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          withCredentials: true,
-        });
-
-        setSummaries(res.data.data);
-      } catch (error) {
-        console.error("Failed to fetch summaries:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchSummaries();
-  }, []);
+  }, [summaries]);
 
-  if (loading) {
+  if (loading && summaries.length === 0) {
     return (
-      <Container sx={{ mt: 4, display: "flex", justifyContent: "center" }}>
-        <CircularProgress />
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Skeleton
+          variant="rectangular"
+          width="100%"
+          height={56}
+          sx={{ mb: 2 }}
+        />
+        {[...Array(5)].map((_, index) => (
+          <Skeleton
+            key={index}
+            variant="rectangular"
+            width="100%"
+            height={72}
+            sx={{ mb: 1 }}
+          />
+        ))}
       </Container>
     );
   }
 
   return (
-    <Container sx={{ mt: 4 }}>
-      <Typography variant="h5" gutterBottom>
-        Saved Summaries
-      </Typography>
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={3}
+      >
+        <Typography variant="h5" fontWeight={600}>
+          My Saved Summaries
+        </Typography>
+        <CustomButton
+          onClick={() => navigate("/")}
+          gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
+          hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
+          boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
+        >
+          Create New
+        </CustomButton>
+      </Box>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                <strong>Name</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Type</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Created At</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Last Modified</strong>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {summaries.map((summary) => (
-              <TableRow key={summary.id}>
-                <TableCell>
-                  <Link
-                    component="button"
-                    variant="body1"
-                    onClick={() => navigate(`/summary/${summary.id}`)}
-                    underline="hover"
-                  >
-                    {summary.tags?.[0] || "Untitled"}
-                  </Link>
-                </TableCell>
-                <TableCell>{summary.type || "N/A"}</TableCell>
-                <TableCell>
-                  {new Date(summary.createdAt).toLocaleString()}
-                </TableCell>
-                <TableCell>
-                  {new Date(summary.updatedAt).toLocaleString()}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {error && (
+        <Alert severity="error" sx={{ mb: 3 }} onClose={() => setError(null)}>
+          {error}
+        </Alert>
+      )}
+
+      <SummaryTable
+        summaries={summaries}
+        deletingId={deletingId}
+        onDelete={handleDelete}
+      />
     </Container>
   );
 };
