@@ -67,12 +67,12 @@ const Login = () => {
         />
 
         <CustomButton
-          type="submit"
           onClick={handleLogin}
           fullWidth
           size="large"
-          isLoading={isLoading}
-          loadingText="Logging in..."
+          loading={isLoading}
+          loadingPosition="start"
+          loadingIndicator="Logging in…"
           gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
           hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
           boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
