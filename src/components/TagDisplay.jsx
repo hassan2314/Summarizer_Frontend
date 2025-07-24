@@ -7,7 +7,7 @@ const TagDisplay = ({ tags = "" }) => {
   if (typeof tags === "string") {
     console.log(tags);
     parsedTags = tags
-      .split("\n")
+      .split(/[\n,]+/)
       .map((line) => line.replace(/^\*\s*/, "").trim())
       .filter(Boolean); // removes empty strings
   }

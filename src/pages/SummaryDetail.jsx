@@ -281,12 +281,11 @@ const SummaryDetail = () => {
           <Stack direction="row" spacing={2} justifyContent="flex-end" mt={2}>
             <CustomButton
               color="error"
-              startIcon={
-                isDeleting ? <CircularProgress size={20} /> : <DeleteIcon />
-              }
+              startIcon={<DeleteIcon />}
+              loading={isDeleting}
+              loadingIndicator="Deleting…"
+              loadingPosition="start"
               onClick={handleDelete}
-              isLoading={isDeleting}
-              loadingText="Deleting..."
               sx={{
                 px: 3,
                 "&:hover": { bgcolor: theme.palette.error.dark },
@@ -294,20 +293,20 @@ const SummaryDetail = () => {
             >
               Delete
             </CustomButton>
+
             <CustomButton
               color="primary"
-              startIcon={
-                isUpdating ? <CircularProgress size={20} /> : <SaveIcon />
-              }
+              startIcon={<SaveIcon />}
+              loading={isUpdating}
+              loadingPosition="start"
+              loadingIndicator="Saving…"
               onClick={handleUpdate}
-              isLoading={isUpdating}
-              loadingText="Saving..."
               disabled={!updatedResponse}
               gradient="linear-gradient(45deg, #4CAF50 30%, #8BC34A 90%)"
               hoverGradient="linear-gradient(45deg, #8BC34A 30%, #4CAF50 90%)"
               sx={{ px: 3 }}
             >
-              Save Changes
+              Save
             </CustomButton>
           </Stack>
         </Box>

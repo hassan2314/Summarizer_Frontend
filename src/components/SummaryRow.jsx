@@ -139,6 +139,7 @@ const SummaryRow = ({ summary, deletingId, onDelete }) => {
               "&:hover": { color: theme.palette.primary.main },
             }}
           />
+
           <CustomButton
             size="small"
             startIcon={

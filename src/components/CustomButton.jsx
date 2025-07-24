@@ -1,52 +1,37 @@
-import React from "react";
-import { Button, CircularProgress } from "@mui/material";
+import * as React from "react";
+import { styled } from "@mui/system";
+import Button from "@mui/material/Button";
+
+const StyledButton = styled(Button, {
+  shouldForwardProp: (prop) =>
+    !["gradient", "hoverGradient", "boxShadow"].includes(prop),
+})(({ gradient, hoverGradient, boxShadow }) => ({
+  background: gradient,
+  boxShadow: boxShadow,
+  "&:hover": {
+    background: hoverGradient || gradient,
+  },
+}));
 
 const CustomButton = ({
   children,
-  onClick,
-  disabled = false,
-  isLoading = false,
-  loadingText = "Loading...",
-  startIcon,
-  type = "button",
-  variant = "contained",
-  fullWidth = false,
-  size = "medium",
   gradient,
   hoverGradient,
   boxShadow,
-  color,
+  loadingIndicator = "Loading…",
   sx = {},
-  ...rest
+  ...props
 }) => {
   return (
-    <Button
-      type={type}
-      variant={variant}
-      color={color}
-      size={size}
-      fullWidth={fullWidth}
-      startIcon={
-        isLoading && !startIcon ? (
-          <CircularProgress size={20} color="inherit" />
-        ) : (
-          startIcon
-        )
-      }
-      onClick={onClick}
-      disabled={disabled || isLoading}
-      sx={{
-        background: gradient,
-        boxShadow: boxShadow,
-        "&:hover": {
-          background: hoverGradient,
-        },
-        ...sx,
-      }}
-      {...rest}
+    <StyledButton
+      gradient={gradient}
+      hoverGradient={hoverGradient}
+      boxShadow={boxShadow}
+      sx={sx}
+      {...props} // includes loading, loadingPosition, startIcon, endIcon, etc.
     >
-      {isLoading ? loadingText : children}
-    </Button>
+      {children}
+    </StyledButton>
   );
 };
 
