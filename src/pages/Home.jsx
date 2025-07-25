@@ -1,3 +1,4 @@
+// Home.jsx
 import { useState } from "react";
 import {
   Container,
@@ -12,22 +13,24 @@ import {
   Fade,
   Slide,
   Alert,
-  Button,
 } from "@mui/material";
-import API from "../lib/axiosInstance";
 
+import API from "../lib/axiosInstance";
 import ModeSelector from "../components/ModeSelector";
 import InputArea from "../components/InputArea";
 import OutputDisplay from "../components/OutputDisplay";
 import ButtonsBox from "../components/ButtonsBox";
 import CustomButton from "../components/CustomButton";
 import TagDisplay from "../components/TagDisplay";
+import QADisplay from "../components/QADisplay";
 
 const Home = () => {
   const theme = useTheme();
   const [mode, setMode] = useState("paragraph");
   const [tags, setTags] = useState("");
   const [length, setLength] = useState(3);
+  const [questions, setQuestions] = useState([]);
+  const [answers, setAnswers] = useState([]);
   const [text, setText] = useState("");
   const [summary, setSummary] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
@@ -47,10 +50,10 @@ const Home = () => {
     try {
       const response = await API.post(`summarizer/`, {
         dialogue: text,
-        mode: mode,
+        mode,
       });
 
-      const result = response.data.data;
+      const result = response.data.data; // { data: "...", tags: "..." }
       setTags(result.tags);
       setSummary(result.data);
     } catch (err) {
@@ -69,10 +72,7 @@ const Home = () => {
   };
 
   const confirmSave = async () => {
-    console.log("Saving summary", summary);
-
-    // Convert summary to array based on mode and type
-    const response =
+    const formattedResponse =
       (mode === "question" || mode === "bullets") && typeof summary === "string"
         ? summary
             .split(/\n{1,2}/)
@@ -82,7 +82,6 @@ const Home = () => {
         ? summary.map((s) => s.trim()).filter(Boolean)
         : [summary?.toString().trim()];
 
-    // Ensure tags are in array format (String[])
     const formattedTags = Array.isArray(tags)
       ? tags.map((tag) => tag.trim()).filter(Boolean)
       : typeof tags === "string"
@@ -97,23 +96,23 @@ const Home = () => {
       type: mode,
       originalText: text,
       tags: formattedTags,
-      response,
+      response: formattedResponse,
     };
 
     try {
       setIsLoading(true);
-      const res = await API.post(`summary`, payload);
-      console.log("Summary saved:", res.data);
+      await API.post(`summary`, payload);
       setOpenDialog(false);
       setName("");
       setError(null);
     } catch (error) {
-      console.error("Save error:", error);
       setError("Failed to save summary. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
+
+  const checkAnswers = () => {};
 
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
@@ -156,10 +155,10 @@ const Home = () => {
                   onClick={handleSummarize}
                   loading={isLoading}
                   loadingPosition="start"
+                  loadingIndicator="Summarizing…"
                   gradient="linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)"
                   hoverGradient="linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)"
                   boxShadow="0 3px 5px 2px rgba(255, 105, 135, .3)"
-                  loadingIndicator="Summarizing…"
                   sx={{
                     fontSize: "14px",
                     fontWeight: 500,
@@ -177,26 +176,76 @@ const Home = () => {
         <Box flex={1} display="flex" flexDirection="column">
           <Slide direction="left" in={true} mountOnEnter unmountOnExit>
             <Box>
-              <OutputDisplay summary={summary} mode={mode} />
-              <TagDisplay tags={tags} />
-              <Box display="flex" justifyContent="center" mt={2}>
-                <CustomButton
-                  size="small"
-                  onClick={handleSaveClick}
-                  disabled={!summary || isLoading}
-                  gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
-                  hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
-                  boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
-                  sx={{
-                    fontSize: "14px",
-                    fontWeight: 500,
-                    color: "white",
-                    textTransform: "capitalize",
-                  }}
-                >
-                  Save Summary
-                </CustomButton>
-              </Box>
+              {mode === "questions" ? (
+                <>
+                  <QADisplay
+                    summary={summary}
+                    setAnswers={setAnswers}
+                    setQuestions={setQuestions}
+                    questions={questions}
+                    answers={answers}
+                  />
+                  <TagDisplay tags={tags} />
+                  <Box display="flex" justifyContent="center" mt={2}>
+                    <CustomButton
+                      size="small"
+                      onClick={handleSaveClick}
+                      disabled={!summary || isLoading}
+                      gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
+                      hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
+                      boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
+                      sx={{
+                        fontSize: "14px",
+                        fontWeight: 500,
+                        color: "white",
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      Save QA
+                    </CustomButton>
+                    <CustomButton
+                      size="small"
+                      onClick={checkAnswers}
+                      disabled={!summary || isLoading}
+                      gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
+                      hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
+                      boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
+                      sx={{
+                        fontSize: "14px",
+                        fontWeight: 500,
+                        color: "white",
+                        textTransform: "capitalize",
+                        ml: 2,
+                      }}
+                    >
+                      Check Answers
+                    </CustomButton>
+                  </Box>
+                </>
+              ) : (
+                <>
+                  <OutputDisplay summary={summary} mode={mode} />
+                  <TagDisplay tags={tags} />
+                  <Box display="flex" justifyContent="center" mt={2}>
+                    <CustomButton
+                      size="small"
+                      onClick={handleSaveClick}
+                      disabled={!summary || isLoading}
+                      gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
+                      hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
+                      boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
+                      sx={{
+                        fontSize: "14px",
+                        fontWeight: 500,
+                        color: "white",
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      Save Summary
+                    </CustomButton>
+                  </Box>
+                </>
+              )}
             </Box>
           </Slide>
         </Box>
