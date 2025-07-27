@@ -27,7 +27,7 @@ import QADisplay from "../components/QADisplay";
 const Home = () => {
   const theme = useTheme();
   const [mode, setMode] = useState("paragraph");
-  const [tags, setTags] = useState("");
+  const [tags, setTags] = useState([]);
   const [length, setLength] = useState(3);
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
