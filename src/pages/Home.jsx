@@ -156,9 +156,12 @@ const Home = () => {
                   onClick={handleSummarize}
                   loading={isLoading}
                   loadingPosition="start"
-                  gradient="linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)"
-                  hoverGradient="linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)"
-                  boxShadow="0 3px 5px 2px rgba(255, 105, 135, .3)"
+                  // gradient="linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)"
+                  // hoverGradient="linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)"
+                  // boxShadow="0 3px 5px 2px rgba(255, 105, 135, .3)"
+                  gradient="linear-gradient(45deg, #1565C0 30%, #0288D1 90%)"
+                  hoverGradient="linear-gradient(45deg, #0288D1 30%, #1565C0 90%)"
+                  boxShadow="0 3px 5px 2px rgba(2, 136, 209, .3)"
                   loadingIndicator="Summarizing…"
                   sx={{
                     fontSize: "14px",
@@ -184,6 +187,9 @@ const Home = () => {
                   size="small"
                   onClick={handleSaveClick}
                   disabled={!summary || isLoading}
+                  // gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
+                  // hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
+                  // boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
                   gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
                   hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
                   boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
