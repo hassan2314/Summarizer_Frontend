@@ -26,7 +26,7 @@ import TagDisplay from "../components/TagDisplay";
 const Home = () => {
   const theme = useTheme();
   const [mode, setMode] = useState("paragraph");
-  const [tags, setTags] = useState("");
+  const [tags, setTags] = useState([]);
   const [text, setText] = useState("");
   const [summary, setSummary] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
@@ -84,12 +84,17 @@ const Home = () => {
         ? summary.map((s) => s.trim()).filter(Boolean)
         : [summary?.toString().trim()];
 
+    // const formattedTags = tags
+    //   .split(/\n{1,2}/)
+    //   .map((s) => s.trim())
+    //   .filter(Boolean);
+
     // Ensure tags are in array format (String[])
     const formattedTags = Array.isArray(tags)
       ? tags.map((tag) => tag.trim()).filter(Boolean)
       : typeof tags === "string"
       ? tags
-          .split("\n")
+          .split(/[\n,]+/)
           .map((tag) => tag.replace(/^\*?\s*/, "").trim())
           .filter(Boolean)
       : [];
