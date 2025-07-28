@@ -255,11 +255,14 @@ const Navbar = () => {
                 startIcon={<SignupIcon />}
                 sx={{
                   background:
-                    "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
-                  boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+                    theme.palette.mode === "dark"
+                      ? "linear-gradient(45deg, #90caf9, #42a5f5)"
+                      : "linear-gradient(45deg, #1976d2, #0d47a1)",
                   "&:hover": {
                     background:
-                      "linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)",
+                      theme.palette.mode === "dark"
+                        ? "linear-gradient(45deg, #1976d2, #0d47a1)"
+                        : "linear-gradient(45deg, #90caf9, #42a5f5)",
                   },
                 }}
               >

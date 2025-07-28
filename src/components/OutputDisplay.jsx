@@ -42,14 +42,6 @@ const OutputDisplay = ({
         }
         InputProps={{
           readOnly,
-          sx: {
-            bgcolor:
-              theme.palette.mode === "light" ? "#fafafa" : "background.paper",
-            borderRadius: 2,
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.divider,
-            },
-          },
         }}
         onChange={onChange}
       />

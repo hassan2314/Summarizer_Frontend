@@ -37,7 +37,10 @@ const Home = () => {
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  // const [state, setState] = React.useState({name:'', text:'',tags:[]})
 
+  // setState({name:name, text:text, tags:tags})
+  // setState((st)=>({...st, name:name, text:text, tags:tags}))
   const handleSummarize = async () => {
     if (!text.trim()) {
       setError("Please enter some text first.");
@@ -129,10 +132,23 @@ const Home = () => {
         />
       )}
 
-      <Box display="flex" justifyContent="flex-start" mb={2}>
+      <Box display="flex" justifyContent="space-between" mb={2}>
         <Box width={{ xs: "100%", md: "50%" }}>
           <ModeSelector mode={mode} setMode={setMode} />
         </Box>
+
+        <CustomButton
+          size="small"
+          onClick={handleSaveClick}
+          disabled={!summary || isLoading}
+          loading={isLoading}
+          loadingIndicator="Saving…"
+          sx={{
+            display: { xs: "none", md: "block" },
+          }}
+        >
+          Save Summary
+        </CustomButton>
       </Box>
 
       {error && (
