@@ -80,7 +80,7 @@ const AuthFormWrapper = ({ title, children }) => {
               color:
                 theme.palette.mode === "light"
                   ? theme.palette.primary.main
-                  : theme.palette.secondary.main,
+                  : "#ffffff",
               mb: 3,
             }}
           >

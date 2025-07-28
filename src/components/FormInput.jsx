@@ -1,5 +1,4 @@
 import { TextField, useTheme } from "@mui/material";
-import React from "react";
 
 const FormInput = ({
   label,
@@ -33,7 +32,7 @@ const FormInput = ({
             borderColor: theme.palette.primary.main,
           },
           "&.Mui-focused fieldset": {
-            borderColor: theme.palette.secondary.main,
+            borderColor: theme.palette.primary.main,
             borderWidth: 2,
           },
         },
@@ -43,7 +42,7 @@ const FormInput = ({
               ? "rgba(0, 0, 0, 0.6)"
               : "rgba(255, 255, 255, 0.6)",
           "&.Mui-focused": {
-            color: theme.palette.secondary.main,
+            color: theme.palette.primary.main,
           },
         },
         mb: 2,

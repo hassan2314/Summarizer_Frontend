@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Typography, Alert, Fade } from "@mui/material";
+import { Typography, Alert, Fade } from "@mui/material";
 import FormInput from "../components/FormInput";
 import AuthFormWrapper from "../components/AuthFormWrapper";
 import API from "../lib/axiosInstance";
@@ -7,8 +7,10 @@ import { useDispatch } from "react-redux";
 import { loginSuccess } from "../store/userSlice";
 import { useNavigate, Link } from "react-router-dom";
 import CustomButton from "../components/CustomButton";
+import { useTheme } from "@mui/material";
 
 const Login = () => {
+  const theme = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [formError, setFormError] = useState("");
