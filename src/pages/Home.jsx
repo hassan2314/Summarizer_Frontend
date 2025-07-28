@@ -132,10 +132,23 @@ const Home = () => {
         />
       )}
 
-      <Box display="flex" justifyContent="flex-start" mb={2}>
+      <Box display="flex" justifyContent="space-between" mb={2}>
         <Box width={{ xs: "100%", md: "50%" }}>
           <ModeSelector mode={mode} setMode={setMode} />
         </Box>
+
+        <CustomButton
+          size="small"
+          onClick={handleSaveClick}
+          disabled={!summary || isLoading}
+          loading={isLoading}
+          loadingIndicator="Saving…"
+          sx={{
+            display: { xs: "none", md: "block" },
+          }}
+        >
+          Save Summary
+        </CustomButton>
       </Box>
 
       {error && (
@@ -185,6 +198,9 @@ const Home = () => {
                   // hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
                   // boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
                   loadingIndicator="Saving…"
+                  sx={{
+                    display: { xs: "block", md: "none" },
+                  }}
                 >
                   Save Summary
                 </CustomButton>

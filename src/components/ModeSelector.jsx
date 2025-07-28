@@ -14,14 +14,14 @@ const ModeSelector = ({ mode, setMode }) => {
       variant="fullWidth"
       sx={{
         "& .MuiTabs-indicator": {
-          height: 4,
+          height: 2,
           borderRadius: 2,
         },
         "& .MuiTab-root": {
           fontSize: "0.875rem",
           fontWeight: 600,
           textTransform: "capitalize",
-          minHeight: 48,
+          minHeight: 40,
           color: theme.palette.text.primary,
           "&.Mui-selected": {
             color: theme.palette.secondary.main,
