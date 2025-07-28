@@ -89,7 +89,7 @@ const Home = () => {
       ? tags.map((tag) => tag.trim()).filter(Boolean)
       : typeof tags === "string"
       ? tags
-          .split("\n")
+          .split(/[\n,]+/)
           .map((tag) => tag.replace(/^\*?\s*/, "").trim())
           .filter(Boolean)
       : [];
