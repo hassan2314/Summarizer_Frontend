@@ -17,7 +17,7 @@ const CustomButton = styled(Button)(
     loadingPosition: "start",
     maxHeight: 40,
     "&:hover": {
-      background: hoverGradient || gradient,
+      background: hoverGradient || "",
     },
   })
 );

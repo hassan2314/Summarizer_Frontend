@@ -286,7 +286,7 @@ const SummaryDetail = () => {
               onClick={handleUpdate}
               disabled={!updatedResponse}
               gradient="linear-gradient(45deg, #4CAF50 30%, #8BC34A 90%)"
-              hovergradient="linear-gradient(45deg, #8BC34A 30%, #4CAF50 90%)"
+              hoverGradient="linear-gradient(45deg, #8BC34A 30%, #4CAF50 90%)"
             >
               Save
             </CustomButton>

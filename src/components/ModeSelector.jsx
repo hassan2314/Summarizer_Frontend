@@ -10,7 +10,7 @@ const ModeSelector = ({ mode, setMode }) => {
       value={mode}
       onChange={handleChange}
       textColor="secondary"
-      indicatorColor="secondary"
+      indicatorColor="primary"
       variant="fullWidth"
       sx={{
         "& .MuiTabs-indicator": {
@@ -24,7 +24,10 @@ const ModeSelector = ({ mode, setMode }) => {
           minHeight: 40,
           color: theme.palette.text.primary,
           "&.Mui-selected": {
-            color: theme.palette.secondary.main,
+            color: " #1976d2",
+          },
+          "&:hover": {
+            color: " #1976d2",
           },
         },
         borderRadius: 2,
