@@ -1,4 +1,3 @@
-// Home.jsx
 import { useState } from "react";
 import {
   Container,
@@ -37,6 +36,7 @@ const Home = () => {
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [feedback, setFeedback] = useState([]);
   // const [state, setState] = React.useState({name:'', text:'',tags:[]})
 
   // setState({name:name, text:text, tags:tags})
@@ -66,6 +66,27 @@ const Home = () => {
     }
   };
 
+  const handleCheckAnswers = async () => {
+    if (!text || !questions || !answers) return;
+
+    const qa_pairs = questions.map((question, idx) => ({
+      question,
+      user_answer: answers[idx],
+    }));
+
+    try {
+      const response = await API.post("summarizer/check-batch", {
+        context: text,
+        qa_pairs,
+      });
+
+      setFeedback(response.data.data.feedback.split("\n")); // Split for per-answer feedback
+      setAnswers(answers);
+    } catch (err) {
+      console.error("Failed to check answers:", err);
+    }
+  };
+
   const handleSaveClick = () => {
     if (!summary || !text) {
       setError("Please generate a summary first.");
@@ -75,47 +96,68 @@ const Home = () => {
   };
 
   const confirmSave = async () => {
-    const formattedResponse =
-      (mode === "question" || mode === "bullets") && typeof summary === "string"
-        ? summary
-            .split(/\n{1,2}/)
-            .map((s) => s.trim())
+    if (mode !== "questions") {
+      const formattedResponse =
+        (mode === "question" || mode === "bullets") &&
+        typeof summary === "string"
+          ? summary
+              .split(/\n{1,2}/)
+              .map((s) => s.trim())
+              .filter(Boolean)
+          : Array.isArray(summary)
+          ? summary.map((s) => s.trim()).filter(Boolean)
+          : [summary?.toString().trim()];
+
+      const formattedTags = Array.isArray(tags)
+        ? tags.map((tag) => tag.trim()).filter(Boolean)
+        : typeof tags === "string"
+        ? tags
+            .split(/[\n,]+/)
+            .map((tag) => tag.replace(/^\*?\s*/, "").trim())
             .filter(Boolean)
-        : Array.isArray(summary)
-        ? summary.map((s) => s.trim()).filter(Boolean)
-        : [summary?.toString().trim()];
+        : [];
 
-    const formattedTags = Array.isArray(tags)
-      ? tags.map((tag) => tag.trim()).filter(Boolean)
-      : typeof tags === "string"
-      ? tags
-          .split(/[\n,]+/)
-          .map((tag) => tag.replace(/^\*?\s*/, "").trim())
-          .filter(Boolean)
-      : [];
+      const payload = {
+        name,
+        type: mode,
+        originalText: text,
+        tags: formattedTags,
+        response: formattedResponse,
+      };
 
-    const payload = {
-      name,
-      type: mode,
-      originalText: text,
-      tags: formattedTags,
-      response: formattedResponse,
-    };
-
-    try {
-      setIsLoading(true);
-      await API.post(`summary`, payload);
-      setOpenDialog(false);
-      setName("");
-      setError(null);
-    } catch (error) {
-      setError("Failed to save summary. Please try again.");
-    } finally {
-      setIsLoading(false);
+      try {
+        setIsLoading(true);
+        await API.post(`summary`, payload);
+        setOpenDialog(false);
+        setName("");
+        setError(null);
+      } catch (error) {
+        setError("Failed to save summary. Please try again.");
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      const payload = {
+        name,
+        type: mode,
+        originalText: text,
+        questions: questions,
+        answers: answers,
+      };
+      console.log(payload);
+      // try {
+      //   setIsLoading(true);
+      //   await API.post(`qa`, payload);
+      //   setOpenDialog(false);
+      //   setName("");
+      //   setError(null);
+      // } catch (error) {
+      //   setError("Failed to save summary. Please try again.");
+      // } finally {
+      //   setIsLoading(false);
+      // }
     }
   };
-
-  const checkAnswers = () => {};
 
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
@@ -200,6 +242,7 @@ const Home = () => {
                     setQuestions={setQuestions}
                     questions={questions}
                     answers={answers}
+                    feedback={feedback}
                   />
                   <TagDisplay tags={tags} />
                   <Box display="flex" justifyContent="center" mt={2}>
@@ -221,7 +264,7 @@ const Home = () => {
                     </CustomButton>
                     <CustomButton
                       size="small"
-                      onClick={checkAnswers}
+                      onClick={handleCheckAnswers}
                       disabled={!summary || isLoading}
                       gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
                       hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
