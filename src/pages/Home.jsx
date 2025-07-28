@@ -27,14 +27,16 @@ const Home = () => {
   const theme = useTheme();
   const [mode, setMode] = useState("paragraph");
   const [tags, setTags] = useState("");
-  const [length, setLength] = useState(3);
   const [text, setText] = useState("");
   const [summary, setSummary] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  // const [state, setState] = React.useState({name:'', text:'',tags:[]})
 
+  // setState({name:name, text:text, tags:tags})
+  // setState((st)=>({...st, name:name, text:text, tags:tags}))
   const handleSummarize = async () => {
     if (!text.trim()) {
       setError("Please enter some text first.");
@@ -159,16 +161,7 @@ const Home = () => {
                   // gradient="linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)"
                   // hoverGradient="linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)"
                   // boxShadow="0 3px 5px 2px rgba(255, 105, 135, .3)"
-                  gradient="linear-gradient(45deg, #1565C0 30%, #0288D1 90%)"
-                  hoverGradient="linear-gradient(45deg, #0288D1 30%, #1565C0 90%)"
-                  boxShadow="0 3px 5px 2px rgba(2, 136, 209, .3)"
                   loadingIndicator="Summarizing…"
-                  sx={{
-                    fontSize: "14px",
-                    fontWeight: 500,
-                    color: "white",
-                    textTransform: "capitalize",
-                  }}
                 >
                   Summarize
                 </CustomButton>
@@ -187,18 +180,11 @@ const Home = () => {
                   size="small"
                   onClick={handleSaveClick}
                   disabled={!summary || isLoading}
+                  loading={isLoading}
                   // gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
                   // hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
                   // boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
-                  gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
-                  hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
-                  boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
-                  sx={{
-                    fontSize: "14px",
-                    fontWeight: 500,
-                    color: "white",
-                    textTransform: "capitalize",
-                  }}
+                  loadingIndicator="Saving…"
                 >
                   Save Summary
                 </CustomButton>

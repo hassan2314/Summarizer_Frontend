@@ -74,27 +74,29 @@ const SummaryDetail = () => {
 
         if (responseLines.every((line) => line.charAt(0) === "•")) {
           // If lines already start with bullet
+          console.log("Lines already start with bullet");
           formattedResponse = responseLines
             .map((line) => line.charAt(0).toUpperCase() + line.slice(1))
             .join("\n\n");
         } else {
           // Add bullets and capitalize first letter
-
+          console.log("Before formatting", responseLines);
           formattedResponse = responseLines
             .map((line) => `• ${line.charAt(0).toUpperCase()}${line.slice(1)}`)
             .join("\n\n");
+          console.log(formattedResponse);
         }
 
         setUpdatedResponse(formattedResponse);
+      } else {
+        setUpdatedResponse(
+          res.data.data.response
+            .map(
+              (sentence) => sentence.charAt(0).toUpperCase() + sentence.slice(1)
+            )
+            .join("\n\n")
+        );
       }
-
-      setUpdatedResponse(
-        res.data.data.response
-          .map(
-            (sentence) => sentence.charAt(0).toUpperCase() + sentence.slice(1)
-          )
-          .join("\n\n")
-      );
     } catch (error) {
       console.error("Failed to load summary detail:", error);
       setError("Failed to load summary. Please try again.");
@@ -238,27 +240,15 @@ const SummaryDetail = () => {
       </Box>
 
       <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={3}>
-        {/* Original Text Section */}
         <Box flex={1} display="flex" flexDirection="column">
           <Typography variant="h6" gutterBottom>
             Original Text
           </Typography>
-          <InputArea
-            text={summary.originalText}
-            readOnly
-            sx={{
-              flex: 1,
-              bgcolor:
-                theme.palette.mode === "light"
-                  ? "rgba(0, 0, 0, 0.04)"
-                  : "rgba(255, 255, 255, 0.04)",
-            }}
-          />
+          <InputArea text={summary.originalText} readOnly />
         </Box>
 
         {/* <Divider orientation="vertical" flexItem /> */}
 
-        {/* Summary Section */}
         <Box flex={1} display="flex" flexDirection="column">
           <Typography variant="h6" gutterBottom>
             Summary
@@ -268,13 +258,6 @@ const SummaryDetail = () => {
             mode={summary.type}
             readOnly={false}
             onChange={(e) => setUpdatedResponse(e.target.value)}
-            sx={{
-              flex: 1,
-              bgcolor:
-                theme.palette.mode === "light"
-                  ? "rgba(33, 150, 243, 0.04)"
-                  : "rgba(33, 150, 243, 0.08)",
-            }}
           />
           <TagDisplay tags={summary.tags} />
 
@@ -303,8 +286,7 @@ const SummaryDetail = () => {
               onClick={handleUpdate}
               disabled={!updatedResponse}
               gradient="linear-gradient(45deg, #4CAF50 30%, #8BC34A 90%)"
-              hoverGradient="linear-gradient(45deg, #8BC34A 30%, #4CAF50 90%)"
-              sx={{ px: 3 }}
+              hovergradient="linear-gradient(45deg, #8BC34A 30%, #4CAF50 90%)"
             >
               Save
             </CustomButton>

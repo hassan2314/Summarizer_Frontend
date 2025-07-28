@@ -1,4 +1,3 @@
-// src/components/TagDisplay.jsx
 import { Box, Typography, Chip, useTheme } from "@mui/material";
 
 const TagDisplay = ({ tags = "" }) => {
