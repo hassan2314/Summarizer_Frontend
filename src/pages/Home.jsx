@@ -104,6 +104,8 @@ const Home = () => {
           .map((tag) => tag.replace(/^\*?\s*/, "").trim())
           .filter(Boolean)
       : [];
+
+    console.log(formattedTags);
     if (mode !== "questions") {
       const formattedResponse =
         (mode === "question" || mode === "bullets") &&
@@ -166,43 +168,27 @@ const Home = () => {
           ? feedback.map((s) => s.trim()).filter(Boolean)
           : [feedback?.toString().trim()];
 
-      const formatedResponse = [
-        ...formattedQuestions,
-        ...formattedAnswers,
-        ...formattedFeedback,
-      ];
-
       const payload = {
         name,
         type: mode,
         originalText: text,
         tags: formattedTags,
-        response: formatedResponse,
+        questions: formattedQuestions,
+        answers: formattedAnswers,
+        feedback: formattedFeedback,
       };
-      console.log(formatedResponse);
-
+      console.log(payload);
       try {
         setIsLoading(true);
-        await API.post(`summary`, payload);
+        await API.post(`qa`, payload);
         setOpenDialog(false);
         setName("");
         setError(null);
       } catch (error) {
-        setError("Failed to save summary. Please try again.");
+        setError("Failed to save QA. Please try again.");
       } finally {
         setIsLoading(false);
       }
-      // try {
-      //   setIsLoading(true);
-      //   await API.post(`qa`, payload);
-      //   setOpenDialog(false);
-      //   setName("");
-      //   setError(null);
-      // } catch (error) {
-      //   setError("Failed to save summary. Please try again.");
-      // } finally {
-      //   setIsLoading(false);
-      // }
     }
   };
 
@@ -226,18 +212,20 @@ const Home = () => {
           <ModeSelector mode={mode} setMode={setMode} />
         </Box>
 
-        <CustomButton
-          size="small"
-          onClick={handleSaveClick}
-          disabled={!summary || isLoading}
-          loading={isLoading}
-          loadingIndicator="Saving…"
-          sx={{
-            display: { xs: "none", md: "block" },
-          }}
-        >
-          Save Summary
-        </CustomButton>
+        {mode !== "questions" && (
+          <CustomButton
+            size="small"
+            onClick={handleSaveClick}
+            disabled={!summary || isLoading}
+            loading={isLoading}
+            loadingIndicator="Saving…"
+            sx={{
+              display: { xs: "none", md: "block" },
+            }}
+          >
+            Save Summary
+          </CustomButton>
+        )}
       </Box>
 
       {error && (

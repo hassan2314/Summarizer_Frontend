@@ -77,7 +77,13 @@ const SummaryRow = ({ summary, deletingId, onDelete }) => {
           <Link
             component="button"
             variant="body1"
-            onClick={() => navigate(`/summary/${summary.id}`)}
+            onClick={() =>
+              navigate(
+                summary.type === "questions"
+                  ? `/qa/${summary.id}`
+                  : `/summary/${summary.id}`
+              )
+            }
             underline="hover"
             sx={{
               fontWeight: 500,

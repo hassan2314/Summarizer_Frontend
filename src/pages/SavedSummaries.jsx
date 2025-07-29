@@ -16,8 +16,14 @@ const SavedSummaries = () => {
     try {
       setLoading(true);
       setError(null);
-      const res = await API.get(`summary`);
-      setSummaries(res.data.data);
+      const res = await API.get("summary");
+      const qaRes = await API.get("qa");
+
+      const combined = [...res.data.data, ...qaRes.data.data];
+
+      combined.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+
+      setSummaries(combined);
     } catch (error) {
       setError("Failed to load summaries. Please try again.");
     } finally {

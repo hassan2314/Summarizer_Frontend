@@ -7,6 +7,7 @@ import Home from "../pages/Home";
 import ProtectedRoute from "./ProtectedRoute";
 import SavedSummaries from "../pages/SavedSummaries";
 import SummaryDetail from "../pages/SummaryDetail";
+import QADetail from "../pages/QADetail";
 
 const AppRouter = () => {
   return (
@@ -52,6 +53,14 @@ const AppRouter = () => {
           element={
             <ProtectedRoute>
               <SummaryDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/qa/:id"
+          element={
+            <ProtectedRoute>
+              <QADetail />
             </ProtectedRoute>
           }
         />
