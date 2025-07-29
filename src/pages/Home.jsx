@@ -96,6 +96,14 @@ const Home = () => {
   };
 
   const confirmSave = async () => {
+    const formattedTags = Array.isArray(tags)
+      ? tags.map((tag) => tag.trim()).filter(Boolean)
+      : typeof tags === "string"
+      ? tags
+          .split(/[\n,]+/)
+          .map((tag) => tag.replace(/^\*?\s*/, "").trim())
+          .filter(Boolean)
+      : [];
     if (mode !== "questions") {
       const formattedResponse =
         (mode === "question" || mode === "bullets") &&
@@ -107,15 +115,6 @@ const Home = () => {
           : Array.isArray(summary)
           ? summary.map((s) => s.trim()).filter(Boolean)
           : [summary?.toString().trim()];
-
-      const formattedTags = Array.isArray(tags)
-        ? tags.map((tag) => tag.trim()).filter(Boolean)
-        : typeof tags === "string"
-        ? tags
-            .split(/[\n,]+/)
-            .map((tag) => tag.replace(/^\*?\s*/, "").trim())
-            .filter(Boolean)
-        : [];
 
       const payload = {
         name,
@@ -137,14 +136,62 @@ const Home = () => {
         setIsLoading(false);
       }
     } else {
+      const formattedQuestions =
+        typeof questions === "string"
+          ? questions
+              .split(/\n{1,2}/)
+              .map((s) => s.trim())
+              .filter(Boolean)
+          : Array.isArray(questions)
+          ? questions.map((s) => s.trim()).filter(Boolean)
+          : [questions?.toString().trim()];
+
+      const formattedAnswers =
+        typeof answers === "string"
+          ? answers
+              .split(/\n{1,2}/)
+              .map((s) => s.trim())
+              .filter(Boolean)
+          : Array.isArray(answers)
+          ? answers.map((s) => s.trim()).filter(Boolean)
+          : [answers?.toString().trim()];
+
+      const formattedFeedback =
+        typeof feedback === "string"
+          ? feedback
+              .split(/\n{1,2}/)
+              .map((s) => s.trim())
+              .filter(Boolean)
+          : Array.isArray(feedback)
+          ? feedback.map((s) => s.trim()).filter(Boolean)
+          : [feedback?.toString().trim()];
+
+      const formatedResponse = [
+        ...formattedQuestions,
+        ...formattedAnswers,
+        ...formattedFeedback,
+      ];
+
       const payload = {
         name,
         type: mode,
         originalText: text,
-        questions: questions,
-        answers: answers,
+        tags: formattedTags,
+        response: formatedResponse,
       };
-      console.log(payload);
+      console.log(formatedResponse);
+
+      try {
+        setIsLoading(true);
+        await API.post(`summary`, payload);
+        setOpenDialog(false);
+        setName("");
+        setError(null);
+      } catch (error) {
+        setError("Failed to save summary. Please try again.");
+      } finally {
+        setIsLoading(false);
+      }
       // try {
       //   setIsLoading(true);
       //   await API.post(`qa`, payload);

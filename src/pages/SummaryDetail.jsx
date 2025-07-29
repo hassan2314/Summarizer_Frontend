@@ -30,6 +30,7 @@ import {
   Schedule as TimeIcon,
   CalendarToday as DateIcon,
 } from "@mui/icons-material";
+import QADisplay from "../components/QADisplay";
 
 const SummaryDetail = () => {
   const { id } = useParams();
@@ -39,6 +40,9 @@ const SummaryDetail = () => {
   const [summary, setSummary] = useState(null);
   const [tags, setTags] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [questions, setQuestions] = useState([]);
+  const [answers, setAnswers] = useState([]);
+  const [feedback, setFeedback] = useState([]);
   const [error, setError] = useState(null);
   const [updatedResponse, setUpdatedResponse] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
@@ -68,7 +72,11 @@ const SummaryDetail = () => {
       setTags(data.tags);
 
       const responseLines = res.data.data.response;
-
+      if (data.type === "questions") {
+        setQuestions(responseLines.slice(0, 3));
+        setAnswers(responseLines.slice(3, 6));
+        setFeedback(responseLines.slice(6, 9));
+      }
       if (data.type === "bullets") {
         let formattedResponse = "";
 
@@ -88,7 +96,7 @@ const SummaryDetail = () => {
         }
 
         setUpdatedResponse(formattedResponse);
-      } else {
+      } else if (data.type === "paragraph") {
         setUpdatedResponse(
           res.data.data.response
             .map(
@@ -253,44 +261,56 @@ const SummaryDetail = () => {
           <Typography variant="h6" gutterBottom>
             Summary
           </Typography>
-          <OutputDisplay
-            summary={updatedResponse}
-            mode={summary.type}
-            readOnly={false}
-            onChange={(e) => setUpdatedResponse(e.target.value)}
-          />
+          {summary.type === "questions" ? (
+            <QADisplay
+              questions={questions}
+              answers={answers}
+              feedback={feedback}
+            />
+          ) : (
+            <>
+              <OutputDisplay
+                summary={updatedResponse}
+                mode={summary.type}
+                readOnly={false}
+                onChange={(e) => setUpdatedResponse(e.target.value)}
+              />
+            </>
+          )}
           <TagDisplay tags={summary.tags} />
 
-          <Stack direction="row" spacing={2} justifyContent="flex-end" mt={2}>
-            <CustomButton
-              color="error"
-              startIcon={<DeleteIcon />}
-              loading={isDeleting}
-              loadingIndicator="Deleting…"
-              loadingPosition="start"
-              onClick={handleDelete}
-              sx={{
-                px: 3,
-                "&:hover": { bgcolor: theme.palette.error.dark },
-              }}
-            >
-              Delete
-            </CustomButton>
+          {summary.type !== "questions" && (
+            <Stack direction="row" spacing={2} justifyContent="flex-end" mt={2}>
+              <CustomButton
+                color="error"
+                startIcon={<DeleteIcon />}
+                loading={isDeleting}
+                loadingIndicator="Deleting…"
+                loadingPosition="start"
+                onClick={handleDelete}
+                sx={{
+                  px: 3,
+                  "&:hover": { bgcolor: theme.palette.error.dark },
+                }}
+              >
+                Delete
+              </CustomButton>
 
-            <CustomButton
-              color="primary"
-              startIcon={<SaveIcon />}
-              loading={isUpdating}
-              loadingPosition="start"
-              loadingIndicator="Saving…"
-              onClick={handleUpdate}
-              disabled={!updatedResponse}
-              gradient="linear-gradient(45deg, #4CAF50 30%, #8BC34A 90%)"
-              hoverGradient="linear-gradient(45deg, #8BC34A 30%, #4CAF50 90%)"
-            >
-              Save
-            </CustomButton>
-          </Stack>
+              <CustomButton
+                color="primary"
+                startIcon={<SaveIcon />}
+                loading={isUpdating}
+                loadingPosition="start"
+                loadingIndicator="Saving…"
+                onClick={handleUpdate}
+                disabled={!updatedResponse}
+                gradient="linear-gradient(45deg, #4CAF50 30%, #8BC34A 90%)"
+                hoverGradient="linear-gradient(45deg, #8BC34A 30%, #4CAF50 90%)"
+              >
+                Save
+              </CustomButton>
+            </Stack>
+          )}
         </Box>
       </Box>
     </Container>

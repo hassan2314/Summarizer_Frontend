@@ -39,7 +39,7 @@ const SavedSummaries = () => {
 
   useEffect(() => {
     fetchSummaries();
-  }, [summaries]);
+  }, []);
 
   if (loading && summaries.length === 0) {
     return (
