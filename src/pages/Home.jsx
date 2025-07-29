@@ -316,9 +316,10 @@ const Home = () => {
                       size="small"
                       onClick={handleSaveClick}
                       disabled={!summary || isLoading}
-                      gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
-                      hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
-                      boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
+                      loadingIndicator="Saving…"
+                      sx={{
+                        display: { xs: "block", md: "none" },
+                      }}
                     >
                       Save Summary
                     </CustomButton>
