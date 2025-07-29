@@ -104,6 +104,8 @@ const SummaryDetail = () => {
             )
             .join("\n\n")
         );
+      } else {
+        setUpdatedResponse(res.data.data.response.join("\n\n"));
       }
     } catch (error) {
       console.error("Failed to load summary detail:", error);
@@ -129,6 +131,10 @@ const SummaryDetail = () => {
 
       const res = await API.put(`summary/${id}`, payload);
       setSummary(res.data.data);
+      if (res) {
+        window.alert("Summary updated successfully");
+        window.location.reload();
+      }
     } catch (error) {
       console.error("Failed to update summary:", error);
       setError("Failed to update summary. Please try again.");
@@ -279,23 +285,22 @@ const SummaryDetail = () => {
           )}
           <TagDisplay tags={summary.tags} />
 
-          {summary.type !== "questions" && (
-            <Stack direction="row" spacing={2} justifyContent="flex-end" mt={2}>
-              <CustomButton
-                color="error"
-                startIcon={<DeleteIcon />}
-                loading={isDeleting}
-                loadingIndicator="Deleting…"
-                loadingPosition="start"
-                onClick={handleDelete}
-                sx={{
-                  px: 3,
-                  "&:hover": { bgcolor: theme.palette.error.dark },
-                }}
-              >
-                Delete
-              </CustomButton>
-
+          <Stack direction="row" spacing={2} justifyContent="flex-end" mt={2}>
+            <CustomButton
+              color="error"
+              startIcon={<DeleteIcon />}
+              loading={isDeleting}
+              loadingIndicator="Deleting…"
+              loadingPosition="start"
+              onClick={handleDelete}
+              sx={{
+                px: 3,
+                "&:hover": { bgcolor: theme.palette.error.dark },
+              }}
+            >
+              Delete
+            </CustomButton>
+            {summary.type !== "questions" && (
               <CustomButton
                 color="primary"
                 startIcon={<SaveIcon />}
@@ -307,10 +312,10 @@ const SummaryDetail = () => {
                 gradient="linear-gradient(45deg, #4CAF50 30%, #8BC34A 90%)"
                 hoverGradient="linear-gradient(45deg, #8BC34A 30%, #4CAF50 90%)"
               >
-                Save
+                Update
               </CustomButton>
-            </Stack>
-          )}
+            )}
+          </Stack>
         </Box>
       </Box>
     </Container>
