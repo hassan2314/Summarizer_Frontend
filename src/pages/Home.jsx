@@ -249,15 +249,6 @@ const Home = () => {
                   loading={isLoading}
                   loadingPosition="start"
                   loadingIndicator="Summarizing…"
-                  gradient="linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)"
-                  hoverGradient="linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)"
-                  boxShadow="0 3px 5px 2px rgba(255, 105, 135, .3)"
-                  sx={{
-                    fontSize: "14px",
-                    fontWeight: 500,
-                    color: "white",
-                    textTransform: "capitalize",
-                  }}
                 >
                   Summarize
                 </CustomButton>
@@ -269,7 +260,7 @@ const Home = () => {
         <Box flex={1} display="flex" flexDirection="column">
           <Slide direction="left" in={true} mountOnEnter unmountOnExit>
             <Box>
-              {mode === "questions" ? (
+              {mode === "questions" && questions.length > 0 ? (
                 <>
                   <QADisplay
                     summary={summary}
@@ -328,12 +319,6 @@ const Home = () => {
                       gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
                       hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
                       boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
-                      sx={{
-                        fontSize: "14px",
-                        fontWeight: 500,
-                        color: "white",
-                        textTransform: "capitalize",
-                      }}
                     >
                       Save Summary
                     </CustomButton>
