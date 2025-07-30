@@ -22,6 +22,7 @@ const ButtonsBox = ({ setText }) => {
         sx={{
           color: theme.palette.text.primary,
           borderColor: theme.palette.divider,
+          textTransform: "capitalize",
           "&:hover": {
             borderColor: theme.palette.primary.main,
             color: theme.palette.primary.main,
@@ -38,6 +39,7 @@ const ButtonsBox = ({ setText }) => {
         sx={{
           color: theme.palette.text.primary,
           borderColor: theme.palette.divider,
+          textTransform: "capitalize",
           "&:hover": {
             borderColor: theme.palette.error.main,
             color: theme.palette.error.main,

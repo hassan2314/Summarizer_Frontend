@@ -18,6 +18,16 @@ const OutputDisplay = ({
     }
   }
 
+  // if (typeof summary === "string" && mode == "bullets"  ) {
+  //   formatted = summary
+  //     .split("\n")
+  //     .map((line) => line.replace(/^\*\s*/, "").trim())
+  //     .filter(Boolean)
+  //     .map((line) => `• ${line}`)
+  //     .join("\n");
+  //   console.log("&*");
+  // }
+
   const wordCount =
     typeof formatted === "string"
       ? formatted.trim().split(/\s+/).filter(Boolean).length
@@ -42,14 +52,6 @@ const OutputDisplay = ({
         }
         InputProps={{
           readOnly,
-          sx: {
-            bgcolor:
-              theme.palette.mode === "light" ? "#fafafa" : "background.paper",
-            borderRadius: 2,
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.divider,
-            },
-          },
         }}
         onChange={onChange}
       />

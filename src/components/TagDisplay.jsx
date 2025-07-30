@@ -1,13 +1,11 @@
-// src/components/TagDisplay.jsx
 import { Box, Typography, Chip, useTheme } from "@mui/material";
 
 const TagDisplay = ({ tags = "" }) => {
   const theme = useTheme();
   let parsedTags = tags;
   if (typeof tags === "string") {
-    console.log(tags);
     parsedTags = tags
-      .split("\n")
+      .split(/[\n,]+/)
       .map((line) => line.replace(/^\*\s*/, "").trim())
       .filter(Boolean); // removes empty strings
   }

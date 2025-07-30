@@ -1,53 +1,47 @@
-import React from "react";
-import { Button, CircularProgress } from "@mui/material";
+import { styled } from "@mui/system";
+import Button from "@mui/material/Button";
 
-const CustomButton = ({
-  children,
-  onClick,
-  disabled = false,
-  isLoading = false,
-  loadingText = "Loading...",
-  startIcon,
-  type = "button",
-  variant = "contained",
-  fullWidth = false,
-  size = "medium",
-  gradient,
-  hoverGradient,
-  boxShadow,
-  color,
-  sx = {},
-  ...rest
-}) => {
-  return (
-    <Button
-      type={type}
-      variant={variant}
-      color={color}
-      size={size}
-      fullWidth={fullWidth}
-      startIcon={
-        isLoading && !startIcon ? (
-          <CircularProgress size={20} color="inherit" />
-        ) : (
-          startIcon
-        )
-      }
-      onClick={onClick}
-      disabled={disabled || isLoading}
-      sx={{
-        background: gradient,
-        boxShadow: boxShadow,
-        "&:hover": {
-          background: hoverGradient,
-        },
-        ...sx,
-      }}
-      {...rest}
-    >
-      {isLoading ? loadingText : children}
-    </Button>
-  );
-};
+const CustomButton = styled(Button)(
+  ({
+    gradient = "linear-gradient(45deg, #1565C0 30%, #0288D1 90%)",
+    hoverGradient = "linear-gradient(45deg, #0288D1 30%, #1565C0 90%)",
+    boxShadow = "0 3px 5px 2px rgba(2, 136, 209, .3)",
+  }) => ({
+    fontSize: "0.775rem",
+    fontWeight: 600,
+    color: "white",
+    textTransform: "capitalize",
+    position: "relative",
+    background: gradient,
+    boxShadow: boxShadow,
+    loadingPosition: "center",
+    maxHeight: 30,
+    "&:hover": {
+      background: hoverGradient || gradient,
+    },
+  })
+);
+
+// const CustomButton = ({
+//   children,
+//   gradient,
+//   hoverGradient,
+//   boxShadow,
+//   loadingIndicator = "Loading…",
+//   sx = {},
+//   ...props
+// }) => {
+//   return (
+//     <StyledButton
+//       gradient={gradient}
+//       hoverGradient={hoverGradient}
+//       boxShadow={boxShadow}
+//       sx={sx}
+//       {...props} // includes loading, loadingPosition, startIcon, endIcon, etc.
+//     >
+//       {children}
+//     </StyledButton>
+//   );
+// };
 
 export default CustomButton;

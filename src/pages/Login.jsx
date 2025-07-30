@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Typography, Alert, Fade } from "@mui/material";
+import { Typography, Alert, Fade } from "@mui/material";
 import FormInput from "../components/FormInput";
 import AuthFormWrapper from "../components/AuthFormWrapper";
 import API from "../lib/axiosInstance";
@@ -56,7 +56,6 @@ const Login = () => {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          autoFocus
         />
         <FormInput
           label="Password"
@@ -67,12 +66,11 @@ const Login = () => {
         />
 
         <CustomButton
-          type="submit"
           onClick={handleLogin}
           fullWidth
           size="large"
-          isLoading={isLoading}
-          loadingText="Logging in..."
+          loading={isLoading}
+          loadingPosition="start"
           gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
           hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
           boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"

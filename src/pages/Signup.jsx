@@ -2,10 +2,8 @@ import { useState } from "react";
 import { Typography, Alert, Fade } from "@mui/material";
 import FormInput from "../components/FormInput";
 import AuthFormWrapper from "../components/AuthFormWrapper";
-import axios from "axios";
 import API from "../lib/axiosInstance";
 import { useDispatch } from "react-redux";
-import { loginSuccess } from "../store/userSlice";
 import { useNavigate, Link } from "react-router-dom";
 import CustomButton from "../components/CustomButton";
 
@@ -87,18 +85,16 @@ const Signup = () => {
         )}
 
         <CustomButton
-          type="submit"
           onClick={handleSignup}
           fullWidth
           size="large"
-          isLoading={isLoading}
-          loadingText="Creating Account..."
-          gradient="linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)"
-          hoverGradient="linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)"
-          boxShadow="0 3px 5px 2px rgba(255, 105, 135, .3)"
+          loading={isLoading}
+          // gradient="linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)"
+          // hoverGradient="linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)"
+          // boxShadow="0 3px 5px 2px rgba(255, 105, 135, .3)"
           sx={{ mt: 2, py: 1.5, fontWeight: 600 }}
         >
-          Create Account
+          CreateAccount
         </CustomButton>
       </form>
       <Typography variant="body2" sx={{ mt: 3, textAlign: "center" }}>
@@ -106,7 +102,7 @@ const Signup = () => {
         <Link
           to="/login"
           style={{
-            color: "#FF8E53",
+            color: "#21CBF3",
             fontWeight: 600,
             textDecoration: "none",
             "&:hover": {

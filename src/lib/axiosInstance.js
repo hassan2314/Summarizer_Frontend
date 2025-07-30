@@ -27,9 +27,9 @@ API.interceptors.response.use(
 
     // If token expired and not already retrying
     if (
-      error.response?.status === 401 &&
-      error.response?.data?.message === "jwt expired" &&
-      !originalRequest._retry
+      error.response?.status === 401 ||
+      (error.response?.data?.message === "jwt expired" &&
+        !originalRequest._retry)
     ) {
       originalRequest._retry = true;
 

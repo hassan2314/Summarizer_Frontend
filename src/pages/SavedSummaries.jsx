@@ -16,8 +16,14 @@ const SavedSummaries = () => {
     try {
       setLoading(true);
       setError(null);
-      const res = await API.get(`summary`);
-      setSummaries(res.data.data);
+      const res = await API.get("summary");
+      const qaRes = await API.get("qa");
+
+      const combined = [...res.data.data, ...qaRes.data.data];
+
+      combined.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+
+      setSummaries(combined);
     } catch (error) {
       setError("Failed to load summaries. Please try again.");
     } finally {
@@ -39,7 +45,7 @@ const SavedSummaries = () => {
 
   useEffect(() => {
     fetchSummaries();
-  }, [summaries]);
+  }, []);
 
   if (loading && summaries.length === 0) {
     return (
@@ -74,14 +80,7 @@ const SavedSummaries = () => {
         <Typography variant="h5" fontWeight={600}>
           My Saved Summaries
         </Typography>
-        <CustomButton
-          onClick={() => navigate("/")}
-          gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
-          hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
-          boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
-        >
-          Create New
-        </CustomButton>
+        <CustomButton onClick={() => navigate("/")}>Create New</CustomButton>
       </Box>
 
       {error && (

@@ -1,4 +1,3 @@
-// src/App.jsx
 import { CssBaseline } from "@mui/material";
 import AppRouter from "./routes/AppRouter";
 
