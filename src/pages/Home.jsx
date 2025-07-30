@@ -128,7 +128,6 @@ const Home = () => {
           .filter(Boolean)
       : [];
 
-    console.log(formattedTags);
     if (mode !== "questions") {
       const formattedResponse =
         (mode === "question" || mode === "bullets") &&
@@ -155,6 +154,7 @@ const Home = () => {
         setOpenDialog(false);
         setName("");
         setError(null);
+        alert("Summary saved successfully.");
       } catch (error) {
         setError("Failed to save summary. Please try again.");
       } finally {
