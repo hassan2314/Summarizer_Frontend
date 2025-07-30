@@ -23,6 +23,7 @@ const SummaryDetail = () => {
 
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [text, setText] = useState("");
   const [error, setError] = useState(null);
   const [updatedResponse, setUpdatedResponse] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
@@ -121,7 +122,7 @@ const SummaryDetail = () => {
           <Typography variant="h6" gutterBottom>
             Original Text
           </Typography>
-          <InputArea text={summary?.originalText} readOnly />
+          <InputArea text={summary?.originalText} setText={setText} readOnly />
         </Box>
 
         <Box flex={1} display="flex" flexDirection="column">

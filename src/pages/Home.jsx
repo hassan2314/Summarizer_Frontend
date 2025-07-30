@@ -58,7 +58,27 @@ const Home = () => {
 
       const result = response.data.data; // { data: "...", tags: "..." }
       setTags(result.tags);
-      setSummary(result.data);
+      if (mode != "questions") {
+        if (typeof result.data === "string" && mode === "bullets") {
+          const extracted = result.data
+            .split("\n")
+            .map((line) => line.replace(/^\*\s*/, "").trim())
+            .filter(Boolean)
+            .map((line) => `• ${line}`)
+            .join("\n");
+          console.log("Before setSummary : ", extracted);
+          setSummary(extracted);
+          console.log(extracted);
+        } else setSummary(result.data);
+      } else {
+        if (typeof result.data === "string" && result.data.trim().length > 0) {
+          const extracted = result.data
+            .split("\n")
+            .map((line) => line.replace(/^\d+\.\s*/, "").trim())
+            .filter(Boolean);
+          setQuestions(extracted);
+        }
+      }
     } catch (err) {
       setError("Failed to generate summary. Please try again.");
     } finally {
@@ -262,12 +282,10 @@ const Home = () => {
         <Box flex={1} display="flex" flexDirection="column">
           <Slide direction="left" in={true} mountOnEnter unmountOnExit>
             <Box>
-              {mode === "questions" ? (
+              {mode === "questions" && questions.length > 0 ? (
                 <>
                   <QADisplay
-                    summary={summary}
                     setAnswers={setAnswers}
-                    setQuestions={setQuestions}
                     questions={questions}
                     answers={answers}
                     feedback={feedback}
