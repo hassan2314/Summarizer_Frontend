@@ -145,7 +145,6 @@ const QADetail = () => {
               color="error"
               startIcon={<DeleteIcon />}
               loading={isDeleting}
-              loadingIndicator="Deleting…"
               loadingPosition="start"
               onClick={handleDelete}
               sx={{ px: 3 }}
@@ -157,7 +156,6 @@ const QADetail = () => {
               color="primary"
               startIcon={<CheckIcon />}
               loading={isChecking}
-              loadingIndicator="Checking…"
               loadingPosition="start"
               onClick={handleCheckAnswers}
               disabled={!questions.length || !answers.length}
@@ -171,7 +169,6 @@ const QADetail = () => {
               color="primary"
               startIcon={<SaveIcon />}
               loading={isUpdating}
-              loadingIndicator="Saving…"
               loadingPosition="start"
               onClick={handleUpdate}
               gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"

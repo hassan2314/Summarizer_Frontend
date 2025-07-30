@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// Safe user parsing from localStorage
 let user = null;
 try {
   const rawUser = localStorage.getItem("user");
@@ -9,7 +8,7 @@ try {
   }
 } catch (error) {
   console.error("Error parsing user from localStorage:", error);
-  localStorage.removeItem("user"); // Optional cleanup
+  localStorage.removeItem("user");
 }
 
 const initialState = {

@@ -111,7 +111,7 @@ const Home = () => {
   };
 
   const handleSaveClick = () => {
-    if (!summary || !text) {
+    if ((!summary && !questions) || !text) {
       setError("Please generate a summary first.");
       return;
     }
@@ -241,7 +241,6 @@ const Home = () => {
             onClick={handleSaveClick}
             disabled={!summary || isLoading}
             loading={isLoading}
-            loadingIndicator="Saving…"
             sx={{
               display: { xs: "none", md: "block" },
             }}
@@ -296,31 +295,31 @@ const Home = () => {
                     <CustomButton
                       size="small"
                       onClick={handleSaveClick}
-                      disabled={!summary || isLoading}
-                      gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
-                      hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
-                      boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
-                      sx={{
-                        fontSize: "14px",
-                        fontWeight: 500,
-                        color: "white",
-                        textTransform: "capitalize",
-                      }}
+                      disabled={isLoading}
+                      // gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
+                      // hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
+                      // boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
+                      // sx={{
+                      //   fontSize: "14px",
+                      //   fontWeight: 500,
+                      //   color: "white",
+                      //   textTransform: "capitalize",
+                      // }}
                     >
-                      Save QA
+                      Save
                     </CustomButton>
                     <CustomButton
                       size="small"
                       onClick={handleCheckAnswers}
-                      disabled={!summary || isLoading}
-                      gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
-                      hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
-                      // boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
+                      disabled={isLoading}
+                      // gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
+                      // hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
+                      // // boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
                       sx={{
-                        fontSize: "14px",
-                        fontWeight: 500,
-                        color: "white",
-                        textTransform: "capitalize",
+                        //   fontSize: "14px",
+                        //   fontWeight: 500,
+                        //   color: "white",
+                        //   textTransform: "capitalize",
                         ml: 2,
                       }}
                     >
@@ -393,7 +392,6 @@ const Home = () => {
             onClick={confirmSave}
             loading={isLoading}
             loadingPosition="start"
-            loadingIndicator="Saving…"
             gradient="linear-gradient(45deg, #4CAF50 30%, #8BC34A 90%)"
             hoverGradient="linear-gradient(45deg, #8BC34A 30%, #4CAF50 90%)"
           >

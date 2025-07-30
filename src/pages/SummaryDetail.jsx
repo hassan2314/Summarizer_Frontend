@@ -144,7 +144,6 @@ const SummaryDetail = () => {
               color="error"
               startIcon={<DeleteIcon />}
               loading={isDeleting}
-              loadingIndicator="Deleting…"
               loadingPosition="start"
               onClick={handleDelete}
             >
@@ -155,7 +154,6 @@ const SummaryDetail = () => {
               color="primary"
               startIcon={<SaveIcon />}
               loading={isUpdating}
-              loadingIndicator="Saving…"
               loadingPosition="start"
               onClick={handleUpdate}
               disabled={!updatedResponse}
