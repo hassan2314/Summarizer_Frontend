@@ -1,8 +1,6 @@
 import { Box, TextField, useTheme } from "@mui/material";
 
 const InputArea = ({ text, setText }) => {
-  const theme = useTheme();
-
   return (
     <Box>
       <TextField

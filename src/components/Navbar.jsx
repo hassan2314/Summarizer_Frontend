@@ -219,10 +219,10 @@ const Navbar = () => {
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
               >
-                <MenuItem onClick={() => navigate("/profile")}>
+                {/* <MenuItem onClick={() => navigate("/profile")}>
                   <Avatar /> Profile
                 </MenuItem>
-                <Divider />
+                <Divider /> */}
                 <MenuItem onClick={handleLogout}>
                   <LogoutIcon sx={{ mr: 1 }} /> Logout
                 </MenuItem>

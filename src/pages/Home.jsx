@@ -261,7 +261,8 @@ const Home = () => {
 
       <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={3}>
         <Box flex={1} display="flex" flexDirection="column">
-          <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+          <Slide direction="right" in={true}>
+            {/* <Slide direction="right" in={true} mountOnEnter unmountOnExit> */}
             <Box>
               <InputArea text={text} setText={setText} />
               <ButtonsBox setText={setText} />
@@ -314,7 +315,7 @@ const Home = () => {
                       disabled={!summary || isLoading}
                       gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
                       hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
-                      boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
+                      // boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
                       sx={{
                         fontSize: "14px",
                         fontWeight: 500,

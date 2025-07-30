@@ -1,4 +1,3 @@
-// components/DetailWrapper.jsx
 import {
   Container,
   Box,

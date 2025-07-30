@@ -7,10 +7,8 @@ import { useDispatch } from "react-redux";
 import { loginSuccess } from "../store/userSlice";
 import { useNavigate, Link } from "react-router-dom";
 import CustomButton from "../components/CustomButton";
-import { useTheme } from "@mui/material";
 
 const Login = () => {
-  const theme = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [formError, setFormError] = useState("");
@@ -58,7 +56,6 @@ const Login = () => {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          autoFocus
         />
         <FormInput
           label="Password"
@@ -74,11 +71,10 @@ const Login = () => {
           size="large"
           loading={isLoading}
           loadingPosition="start"
-          loadingIndicator="Logging in…"
-          // gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
-          // hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
-          // boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
-          // sx={{ mt: 2, py: 1.5, fontWeight: 600 }}
+          gradient="linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)"
+          hoverGradient="linear-gradient(45deg, #21CBF3 30%, #2196F3 90%)"
+          boxShadow="0 3px 5px 2px rgba(33, 203, 243, .3)"
+          sx={{ mt: 2, py: 1.5, fontWeight: 600 }}
         >
           Login
         </CustomButton>
