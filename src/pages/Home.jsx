@@ -318,7 +318,6 @@ const Home = () => {
                       size="small"
                       onClick={handleSaveClick}
                       disabled={!summary || isLoading}
-                      loadingIndicator="Saving…"
                       sx={{
                         display: { xs: "block", md: "none" },
                       }}

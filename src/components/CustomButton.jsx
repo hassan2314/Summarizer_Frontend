@@ -11,10 +11,11 @@ const CustomButton = styled(Button)(
     fontWeight: 600,
     color: "white",
     textTransform: "capitalize",
+    position: "relative",
     background: gradient,
     boxShadow: boxShadow,
     loadingPosition: "center",
-    // maxHeight: 40,
+    maxHeight: 30,
     "&:hover": {
       background: hoverGradient || "",
     },
