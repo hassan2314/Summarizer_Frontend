@@ -18,6 +18,15 @@ const OutputDisplay = ({
     }
   }
 
+  if (typeof summary === "string" && mode == "bullets") {
+    formatted = summary
+      .split("\n")
+      .map((line) => line.replace(/^\*\s*/, "").trim())
+      .filter(Boolean)
+      .map((line) => `• ${line}`)
+      .join("\n");
+  }
+
   const wordCount =
     typeof formatted === "string"
       ? formatted.trim().split(/\s+/).filter(Boolean).length

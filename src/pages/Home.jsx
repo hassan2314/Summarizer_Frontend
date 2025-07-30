@@ -67,7 +67,10 @@ const Home = () => {
   };
 
   const handleCheckAnswers = async () => {
-    if (!text || !questions || !answers) return;
+    if (!text || !questions || !answers) {
+      setError("Please Enter all Answers");
+      return;
+    }
 
     const qa_pairs = questions.map((question, idx) => ({
       question,
@@ -248,7 +251,6 @@ const Home = () => {
                   onClick={handleSummarize}
                   loading={isLoading}
                   loadingPosition="start"
-                  loadingIndicator="Summarizing…"
                 >
                   Summarize
                 </CustomButton>
@@ -260,7 +262,7 @@ const Home = () => {
         <Box flex={1} display="flex" flexDirection="column">
           <Slide direction="left" in={true} mountOnEnter unmountOnExit>
             <Box>
-              {mode === "questions" && questions.length > 0 ? (
+              {mode === "questions" ? (
                 <>
                   <QADisplay
                     summary={summary}

@@ -13,9 +13,8 @@ const CustomButton = styled(Button)(
     textTransform: "capitalize",
     background: gradient,
     boxShadow: boxShadow,
-    transition: "all 0.2s ease-in-out",
-    loadingPosition: "start",
-    maxHeight: 40,
+    loadingPosition: "center",
+    // maxHeight: 40,
     "&:hover": {
       background: hoverGradient || "",
     },
