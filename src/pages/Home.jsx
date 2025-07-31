@@ -12,6 +12,7 @@ import {
   Fade,
   Slide,
   Alert,
+  Snackbar,
 } from "@mui/material";
 
 import API from "../lib/axiosInstance";
@@ -37,6 +38,7 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [feedback, setFeedback] = useState([]);
+  const [open, setOpen] = useState(false);
   // const [state, setState] = React.useState({name:'', text:'',tags:[]})
 
   // setState({name:name, text:text, tags:tags})
@@ -66,9 +68,8 @@ const Home = () => {
             .filter(Boolean)
             .map((line) => `• ${line}`)
             .join("\n");
-          console.log("Before setSummary : ", extracted);
+
           setSummary(extracted);
-          console.log(extracted);
         } else setSummary(result.data);
       } else {
         if (typeof result.data === "string" && result.data.trim().length > 0) {
@@ -154,7 +155,8 @@ const Home = () => {
         setOpenDialog(false);
         setName("");
         setError(null);
-        alert("Summary saved successfully.");
+        // alert("Summary saved successfully.");
+        setOpen(true);
       } catch (error) {
         setError("Failed to save summary. Please try again.");
       } finally {
@@ -200,13 +202,14 @@ const Home = () => {
         answers: formattedAnswers,
         feedback: formattedFeedback,
       };
-      console.log(payload);
+
       try {
         setIsLoading(true);
         await API.post(`qa`, payload);
         setOpenDialog(false);
         setName("");
         setError(null);
+        setOpen(true);
       } catch (error) {
         setError("Failed to save QA. Please try again.");
       } finally {
@@ -278,7 +281,13 @@ const Home = () => {
             </Box>
           </Slide>
         </Box>
-
+        <Snackbar
+          open={open}
+          autoHideDuration={5000}
+          onClose={() => setOpen(false)}
+          message="Summary saved successfully."
+        />
+        ;
         <Box flex={1} display="flex" flexDirection="column">
           <Slide direction="left" in={true} mountOnEnter unmountOnExit>
             <Box>

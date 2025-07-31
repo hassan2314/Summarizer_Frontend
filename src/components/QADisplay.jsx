@@ -4,7 +4,7 @@ const QADisplay = ({ questions, answers, setAnswers, feedback }) => {
   const theme = useTheme();
 
   // useEffect(() => {
-  //   console.log(answers);
+  //
   //   if (summary && typeof summary === "string" && summary.trim().length > 0) {
   //     const extracted = summary
   //       .split("\n")

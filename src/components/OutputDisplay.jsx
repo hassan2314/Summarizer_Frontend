@@ -25,7 +25,6 @@ const OutputDisplay = ({
   //     .filter(Boolean)
   //     .map((line) => `• ${line}`)
   //     .join("\n");
-  //   console.log("&*");
   // }
 
   const wordCount =
