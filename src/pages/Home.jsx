@@ -234,7 +234,7 @@ const Home = () => {
       )}
 
       <Box display="flex" justifyContent="space-between" mb={2}>
-        <Box width={{ xs: "100%", md: "50%" }}>
+        <Box width={{ xs: "100%", md: "49%" }}>
           <ModeSelector mode={mode} setMode={setMode} />
         </Box>
 
@@ -291,7 +291,7 @@ const Home = () => {
           onClose={() => setOpen(false)}
           message="Summary saved successfully."
         />
-        ;
+
         <Box flex={1} display="flex" flexDirection="column">
           <Slide direction="left" in={true} mountOnEnter unmountOnExit>
             <Box>
