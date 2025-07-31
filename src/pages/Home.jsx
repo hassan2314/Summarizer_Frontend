@@ -275,7 +275,11 @@ const Home = () => {
                   loading={isLoading}
                   loadingPosition="start"
                 >
-                  Summarize
+                  {mode === "questions"
+                    ? "Generate Questions"
+                    : mode === "bullets"
+                    ? "Generate Bullets"
+                    : "Summarize"}
                 </CustomButton>
               </Box>
             </Box>
