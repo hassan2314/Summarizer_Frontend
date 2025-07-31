@@ -20,9 +20,7 @@ const SavedSummaries = () => {
       const qaRes = await API.get("qa");
 
       const combined = [...res.data.data, ...qaRes.data.data];
-
       combined.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-
       setSummaries(combined);
     } catch (error) {
       setError("Failed to load summaries. Please try again.");
@@ -49,7 +47,10 @@ const SavedSummaries = () => {
 
   if (loading && summaries.length === 0) {
     return (
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Container
+        maxWidth="lg"
+        sx={{ mt: { xs: 2, sm: 4 }, mb: { xs: 2, sm: 4 } }}
+      >
         <Skeleton
           variant="rectangular"
           width="100%"
@@ -70,12 +71,17 @@ const SavedSummaries = () => {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+    <Container
+      maxWidth="lg"
+      sx={{ mt: { xs: 2, sm: 4 }, mb: { xs: 2, sm: 4 } }}
+    >
       <Box
         display="flex"
         justifyContent="space-between"
         alignItems="center"
         mb={3}
+        flexWrap="wrap"
+        gap={2}
       >
         <Typography variant="h5" fontWeight={600}>
           My Saved Summaries

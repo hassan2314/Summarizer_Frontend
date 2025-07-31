@@ -77,6 +77,7 @@ const SummaryRow = ({ summary, deletingId, onDelete }) => {
           <Link
             component="button"
             variant="body1"
+            noWrap
             onClick={() =>
               navigate(
                 summary.type === "questions"
@@ -86,6 +87,9 @@ const SummaryRow = ({ summary, deletingId, onDelete }) => {
             }
             underline="hover"
             sx={{
+              maxWidth: 160,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
               fontWeight: 500,
               color: theme.palette.text.primary,
               "&:hover": { color: theme.palette.primary.main },
@@ -112,12 +116,12 @@ const SummaryRow = ({ summary, deletingId, onDelete }) => {
       </TableCell>
 
       <TableCell>
-        <Box display="flex" gap={1}>
-          {summary.tags?.slice(0, 3).map((tag, index) => (
+        <Box display="flex" gap={0.5} flexWrap="wrap">
+          {summary.tags?.slice(0, 2).map((tag, index) => (
             <Chip key={index} label={tag} size="small" variant="outlined" />
           ))}
-          {summary.tags?.length > 3 && (
-            <Chip label={`+${summary.tags.length - 3}`} size="small" />
+          {summary.tags?.length > 2 && (
+            <Chip label={`+${summary.tags.length - 2}`} size="small" />
           )}
         </Box>
       </TableCell>
@@ -135,7 +139,7 @@ const SummaryRow = ({ summary, deletingId, onDelete }) => {
       </TableCell>
 
       <TableCell>
-        <Box display="flex" gap={1}>
+        <Box display="flex" gap={1} flexWrap="wrap">
           <CustomButton
             size="small"
             startIcon={<EditIcon />}
